@@ -14,6 +14,12 @@ import openai
 
 from evaluator import Evaluator
 
+sys.path.append('/data/wyk/bigcodebench/agents')
+from models import QWenLLM
+llm = QWenLLM('pre-qwen-max-2025-01-25-chat')
+from utils import setup_log, extract_code_block
+setup_log("test.log")
+
 DEBUG = False
 EPHEMERAL_FILE = 'debugging.py'
 
@@ -24,17 +30,19 @@ class CommentRemover(ast.NodeTransformer):
         return node
 
 def query_model(prompt, end_tokens=['`'], max_tokens=100):
-    response = openai.Completion.create(
-        model='gpt-3.5-turbo-instruct',
-        prompt=prompt,
-        temperature=0.0,
-        max_tokens=max_tokens,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
-        stop=end_tokens
-    )
-    return_text = response['choices'][0]['text']
+    # response = openai.Completion.create(
+    #     model='gpt-3.5-turbo-instruct',
+    #     prompt=prompt,
+    #     temperature=0.0,
+    #     max_tokens=max_tokens,
+    #     top_p=1,
+    #     frequency_penalty=0,
+    #     presence_penalty=0,
+    #     stop=end_tokens
+    # )
+    # return_text = response['choices'][0]['text']
+    resps, logrpobs = llm.generate(prompt, n=1, temperature=0.0, top_p=1, stop=end_tokens, max_tokens=max_tokens)
+    return_text = resps[0]
     return return_text
 
 def safe_query_model(prompt, end_tokens=['`'], max_tokens=100):
@@ -50,7 +58,7 @@ def safe_query_model(prompt, end_tokens=['`'], max_tokens=100):
 
 def get_error_msg_from(test_file):
     working_dir = os.path.dirname(test_file)
-    p = sp.run(['python3.9', os.path.basename(test_file)], 
+    p = sp.run(['python', os.path.basename(test_file)], 
                capture_output=True)
     error_msg = p.stderr.decode('utf-8').strip()
     assert len(error_msg) != 0
@@ -158,7 +166,7 @@ class PromptBuilder():
             self._add_to_prompt('Attempt')
     
     def _start_pdb(self):
-        cmd = f'python3.9 -m pdb {self._function_file}'
+        cmd = f'python -m pdb {self._function_file}'
 
         self._pdbw = PDBWrapper(cmd)
         process_result = self._pdbw.client_preamble
@@ -226,7 +234,8 @@ class PromptBuilder():
     def single_step(self, is_final=False):
         nl_plan = safe_query_model(self._prompt, end_tokens=['Experiment:'], max_tokens=300)
         self._add_to_prompt(nl_plan + 'Experiment: `')
-        debugger_cmd = safe_query_model(self._prompt, end_tokens=['`'])
+        debugger_cmd = safe_query_model(self._prompt, end_tokens=['Observation:'])
+        debugger_cmd = extract_code_block(debugger_cmd).replace('`','').strip()
         debugger_cmd = debugger_cmd.replace(' n ;', ' c ;')
         debugger_cmd = debugger_cmd.replace(' ; ', ' ;; ')
         self._add_to_prompt(debugger_cmd + '`\nObservation: `')
@@ -300,14 +309,14 @@ class PromptBuilder():
 class ASDEvaluator(Evaluator):
     def __init__(self, mutant_file, template_file):
         with open(mutant_file) as f:
-            self._mutant_info = json.load(f)
+            self._mutant_info = json.load(f)[:5]
         self._template_file = template_file
         super(ASDEvaluator, self).__init__()
     
     def get_solutions(self, N=1, steps=3, ephemeral_file=EPHEMERAL_FILE):
         if N != 1:
             raise NotImplementedError
-        for mutant_instance in tqdm(self._mutant_info):
+        for idx, mutant_instance in tqdm(enumerate(self._mutant_info), total=len(self._mutant_info)):
             custom_test = mutant_instance['failed_tests'][0]['failing_assertion'].strip()
             try:
                 exec_code = self._get_exec_code(
@@ -338,9 +347,27 @@ class ASDEvaluator(Evaluator):
                 print(proposed_sol)
                 print('a-ok')
                 exit(0)
+            # mutant_instance['result'] = result
             mutant_instance['samples'] = [proposed_sol]
             mutant_instance['trace'] = prompt_builder._trace
             mutant_instance['prompt_at_repair'] = prompt_builder._prompt
+
+            # evalaute one solution at a time, and save to 
+            evaluation_object = {
+                'task_id': mutant_instance['task_id'],
+                'samples': mutant_instance['samples']
+            }
+            failing_tests = self.evaluate_sol(evaluation_object)
+            mutant_instance['passed'] = (len(failing_tests) == 0)
+            # TODO: code_status: pass, sys_error, fail, error
+            mutant_instance['fail_tests'] = failing_tests
+            mutant_instance['ARHE_id'] = idx
+            # save to file
+            with open(args.output_file, 'a') as f:
+                json.dump(mutant_instance, f)
+                f.write('\n')
+
+    # TODO: def evaluate_sol(self, solution):
     
     def evaluate_all_solutions(self):
         for idx, mut_info in enumerate(self._mutant_info):
@@ -355,27 +382,38 @@ class ASDEvaluator(Evaluator):
     
     def save_to(self, file_name):
         with open(file_name, 'w') as f:
-            json.dump(self._mutant_info, f)
+            if file_name.endswith('.json'):
+                json.dump(self._mutant_info, f) # for .json
+            elif file_name.endswith('.jsonl'):
+                for mut_info in self._mutant_info: # for .jsonl
+                    json.dump(mut_info, f)
+                    f.write('\n')
+            else:
+                raise ValueError(f'Unsupported file format in {file_name}, expected .json or .jsonl')
 
     
             
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mutant_file', type=str, required=True)
-    parser.add_argument('--template_file', type=str, required=True)
-    parser.add_argument('--output_file', type=str)
+    parser.add_argument('--mutant_file', type=str, default='/data/wyk/autosd/arhe/arhe_data/arhe_bugs.json')#required=True, 
+    parser.add_argument('--template_file', type=str, default='/data/wyk/autosd/arhe/prompts/zero_shot_detailed.txt')
+    parser.add_argument('--output_file', type=str, default="test.jsonl")
     parser.add_argument('--steps', type=int, default=3)
     parser.add_argument('--repeats', type=int, default=1)
 
     args = parser.parse_args()
+
+    # 先清空args.output_file：如果已经存在，就把源文件后面加一个.bak
+    if os.path.exists(args.output_file):
+        os.rename(args.output_file, args.output_file+'.bak')
 
     for r_idx in range(args.repeats):
         asd_evaluator = ASDEvaluator(
             args.mutant_file, args.template_file
         )
         asd_evaluator.get_solutions(steps=args.steps)
-        asd_evaluator.evaluate_all_solutions()
-        if args.output_file is not None:
-            num_out_file = args.output_file if args.repeats == 1 else args.output_file.split('.')[0]+f'_{r_idx}.json'
-            asd_evaluator.save_to(num_out_file)
-            print(f'Iter {r_idx+1}/{args.repeats} saved')
+        # asd_evaluator.evaluate_all_solutions()
+        # if args.output_file is not None:
+        #     num_out_file = args.output_file if args.repeats == 1 else args.output_file.split('.')[0]+f'_{r_idx}.jsonl'
+        #     asd_evaluator.save_to(num_out_file)
+        #     print(f'Iter {r_idx+1}/{args.repeats} saved')

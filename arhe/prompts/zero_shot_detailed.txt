@@ -16,7 +16,7 @@ Prediction: A specific value or symptom that would be observed if the hypothesis
  - Example 1: If I use the debugger to print [expr], while given the input and its intended role indicates that its value should be [desired value], it will be [erroneous value]; that is, when I stop the debugger at line lineno, `[expr] == [actual_value]` will be true.
  - Example 2: If I change [expr] to [new_expr], the test will pass.
 
-Experiment: A specific script that would check whether the prediction made is true. Make sure the line points to an actual statement (not a bracket).
+Experiment: A specific one-line script within `...` that would check whether the prediction made is true. Make sure the line points to an actual statement (not a bracket).
 
  - Example 1 (pdb script): `b debugging.py:lineno ;; c ;; p x != v`
  - Example 2 (edit script): `REPLACE(4321, "c>b", "c>b && a <= d") AND RUN`
