@@ -1,0 +1,61 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Compute the SHA256 hash of a given input string and return its hexadecimal representation. Optionally, verify the computed hash against a provided hash.
+The function should raise the exception for: TypeError: If the input is not a string or verify_hash is not a string or None.
+The function should output with:
+    str: A hexadecimal string representing the SHA256 hash of the input string.
+    bool: True if verify_hash is provided and matches the computed hash, otherwise None.
+You should write self-contained code starting with:
+```
+import binascii
+import hashlib
+def task_func(input_string, verify_hash=None):
+```",0,0,"import binascii
+import hashlib
+def task_func(input_string, verify_hash=None):
+
+    pass
+import binascii
+import hashlib
+def task_func(input_string, verify_hash=None):
+    if not isinstance(input_string, str) or (verify_hash is not None and not isinstance(verify_hash, str)):
+        raise TypeError(""Input should be a string and verify_hash should be a string or None."")
+
+    sha256_hash = hashlib.sha256(input_string.encode()).hexdigest()
+
+    if verify_hash:
+        verify_result = sha256_hash == verify_hash
+    else:
+        verify_result = None
+
+    return sha256_hash, verify_result",fail,test_empty_string,"    def test_empty_string(self):
+        """"""Test that the function returns the correct hash for an empty string.""""""
+        self.assertEqual(
+            task_func(""""),
+            ""e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"",
+        )","{'stat': 'fail', 'exception_type': ""AssertionError: ('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', None) != 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 39, 'funcname': 'test_empty_string', 'codeline': '        self.assertEqual('}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 39, in test_empty_string\nAssertionError: (\'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\', None) != \'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\'\n'}",3/10,/data/wyk/autosd/arhe/bigcodebench5/1021/solution_v0_s0_o0.py
+"Compute the SHA256 hash of a given input string and return its hexadecimal representation. Optionally, verify the computed hash against a provided hash.
+The function should raise the exception for: TypeError: If the input is not a string or verify_hash is not a string or None.
+The function should output with:
+    str: A hexadecimal string representing the SHA256 hash of the input string.
+    bool: True if verify_hash is provided and matches the computed hash, otherwise None.
+You should write self-contained code starting with:
+```
+import binascii
+import hashlib
+def task_func(input_string, verify_hash=None):
+```",10,1,"
+def task_func(input_string, verify_hash=None):
+    if not isinstance(input_string, str) or (verify_hash is not None and not isinstance(verify_hash, str)):
+        raise TypeError(""Input should be a string and verify_hash should be a string or None."")
+
+    sha256_hash = hashlib.sha256(input_string.encode()).hexdigest()
+
+    if verify_hash:
+        verify_result = sha256_hash == verify_hash
+    else:
+        verify_result = None
+
+    return sha256_hash
+",fail,test_verify_hash_incorrect,"    def test_verify_hash_incorrect(self):
+        """"""Test that the function returns False when verify_hash is incorrect.""""""
+        self.assertFalse(task_func(""Hello, World!"", ""incorrect_hash""))","{'stat': 'fail', 'exception_type': ""AssertionError: 'dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f' is not false"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 60, 'funcname': 'test_verify_hash_incorrect', 'codeline': '        self.assertFalse(task_func(""Hello, World!"", ""incorrect_hash""))'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 60, in test_verify_hash_incorrect\nAssertionError: \'dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f\' is not false\n'}",9/10,/data/wyk/autosd/arhe/bigcodebench5/1021/solution_v1_s10_o0.py

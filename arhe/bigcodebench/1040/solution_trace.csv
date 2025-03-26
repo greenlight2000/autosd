@@ -1,0 +1,273 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Run a non-blocking echo server that appends the server's current time to received data and sends it back to the client, while handling exceptional conditions for each socket.
+The function should output with:
+    str: A status message indicating the server's operation and run duration.
+You should write self-contained code starting with:
+```
+import socket
+import select
+import queue
+from datetime import datetime, timedelta
+def task_func(
+    server_address=""localhost"", server_port=12345, buffer_size=1024, run_duration=5
+):
+```",0,0,"import socket
+import select
+import queue
+from datetime import datetime, timedelta
+def task_func(
+    server_address=""localhost"", server_port=12345, buffer_size=1024, run_duration=5
+):
+
+    pass
+import socket
+import select
+import queue
+from datetime import datetime
+def task_func(server_address=""localhost"", server_port=12345, buffer_size=1024, run_duration=5):
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setblocking(0)
+    server_socket.bind((server_address, server_port))
+    server_socket.listen(5)
+
+    inputs = [server_socket]
+    outputs = []
+    message_queues = {}
+
+    start_time = datetime.now()
+    end_time = start_time + timedelta(seconds=run_duration)
+
+    while inputs and datetime.now() < end_time:
+        readable, writable, exceptional = select.select(inputs, outputs, inputs, 0.1)
+
+        for s in readable:
+            if s is server_socket:
+                connection, client_address = s.accept()
+                connection.setblocking(0)
+                inputs.append(connection)
+                message_queues[connection] = queue.Queue()
+            else:
+                data = s.recv(buffer_size)
+                if data:
+                    message_queues[s].put((data, datetime.now().strftime(""%Y-%m-%d %H:%M:%S"")))
+                    if s not in outputs:
+                        outputs.append(s)
+                else:
+                    if s in outputs:
+                        outputs.remove(s)
+                    inputs.remove(s)
+                    s.close()
+                    del message_queues[s]
+
+        for s in writable:
+            try:
+                next_msg = message_queues[s].get_nowait()
+            except queue.Empty:
+                outputs.remove(s)
+            else:
+                data, timestamp = next_msg
+                s.sendall(data + b"" "" + timestamp.encode())
+
+        for s in exceptional:
+            inputs.remove(s)
+            if s in outputs:
+                outputs.remove(s)
+            s.close()
+            del message_queues[s]
+
+    server_socket.close()
+
+    return f""Server operation completed. Run duration: {datetime.now() - start_time}""",error,test_multiple_connections,"    def test_multiple_connections(self):
+        """"""Test the server's ability to handle multiple client connections.""""""
+        responses = []
+        for _ in range(5):
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+                client.connect((""localhost"", 12345))
+                client.sendall(""Test"".encode())
+                responses.append(client.recv(1024).decode())
+        for response in responses:
+            # Assuming the server response format includes the timestamp followed by the echoed message
+            self.assertTrue(""Test"" in response)","{'stat': 'error', 'exception_type': 'ConnectionRefusedError: [Errno 111] Connection refused', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 115, 'funcname': 'test_multiple_connections', 'codeline': '                client.connect((""localhost"", 12345))'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 115, in test_multiple_connections\nConnectionRefusedError: [Errno 111] Connection refused\n'}",2/6,/data/wyk/autosd/arhe/bigcodebench5.new/1040/solution_v0_s0_o0.py
+"Run a non-blocking echo server that appends the server's current time to received data and sends it back to the client, while handling exceptional conditions for each socket.
+The function should output with:
+    str: A status message indicating the server's operation and run duration.
+You should write self-contained code starting with:
+```
+import socket
+import select
+import queue
+from datetime import datetime, timedelta
+def task_func(
+    server_address=""localhost"", server_port=12345, buffer_size=1024, run_duration=5
+):
+```",7,1,"
+def task_func(server_address=""localhost"", server_port=12345, buffer_size=1024, run_duration=5):
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setblocking(0)
+    server_socket.bind((server_address, server_port))
+    server_socket.listen(5)
+
+    inputs = [server_socket]
+    outputs = []
+    message_queues = {}
+
+    start_time = datetime.now()
+    end_time = start_time + timedelta(seconds=run_duration)
+
+    while inputs and datetime.now() < end_time:
+        readable, writable, exceptional = select.select(inputs, outputs, inputs, 0.1)
+
+        for s in readable:
+            if s is server_socket:
+                connection, client_address = s.accept()
+                connection.setblocking(0)
+                inputs.append(connection)
+                message_queues[connection] = queue.Queue()
+            else:
+                try:
+                    data = s.recv(buffer_size)
+                    if data:
+                        message_queues[s].put((data, datetime.now().strftime(""%Y-%m-%d %H:%M:%S"")))
+                        if s not in outputs:
+                            outputs.append(s)
+                    else:
+                        if s in outputs:
+                            outputs.remove(s)
+                        inputs.remove(s)
+                        s.close()
+                        del message_queues[s]
+                except ConnectionResetError:
+                    if s in outputs:
+                        outputs.remove(s)
+                    inputs.remove(s)
+                    s.close()
+                    del message_queues[s]
+
+        for s in writable:
+            try:
+                next_msg = message_queues[s].get_nowait()
+            except queue.Empty:
+                outputs.remove(s)
+            except KeyError:
+                if s in outputs:
+                    outputs.remove(s)
+                if s in inputs:
+                    inputs.remove(s)
+                s.close()
+            else:
+                data, timestamp = next_msg
+                s.sendall(data + b"" "" + timestamp.encode())
+
+        for s in exceptional:
+            inputs.remove(s)
+            if s in outputs:
+                outputs.remove(s)
+            s.close()
+            del message_queues[s]
+
+    server_socket.close()
+
+    return f""Server operation completed. Run duration: {datetime.now() - start_time}""
+",error,test_large_data_transfer,"    def test_large_data_transfer(self):
+        """"""Test the server's ability to handle a large data transfer.""""""
+        large_data = ""A"" * 1000
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+            client.connect((""localhost"", 12345))
+            client.sendall(large_data.encode())
+            # Initialize an empty string to accumulate the response
+            total_response = """"
+            while True:
+                # Receive data in chunks
+                part = client.recv(1024).decode()
+                total_response += part
+                # Check if the end of the message is reached
+                if large_data in total_response:
+                    break
+            # Assert that the large data string is in the response
+            self.assertIn(large_data, total_response)","{'stat': 'error', 'exception_type': 'ConnectionRefusedError: [Errno 111] Connection refused', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 144, 'funcname': 'test_large_data_transfer', 'codeline': '            client.connect((""localhost"", 12345))'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 144, in test_large_data_transfer\nConnectionRefusedError: [Errno 111] Connection refused\n'}",1/6,/data/wyk/autosd/arhe/bigcodebench5.new/1040/solution_v1_s7_o0.py
+"Run a non-blocking echo server that appends the server's current time to received data and sends it back to the client, while handling exceptional conditions for each socket.
+The function should output with:
+    str: A status message indicating the server's operation and run duration.
+You should write self-contained code starting with:
+```
+import socket
+import select
+import queue
+from datetime import datetime, timedelta
+def task_func(
+    server_address=""localhost"", server_port=12345, buffer_size=1024, run_duration=5
+):
+```",10,2,"
+def task_func(server_address=""localhost"", server_port=12345, buffer_size=1024, run_duration=5):
+    import datetime
+    import queue
+    import socket
+    import select
+
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setblocking(0)
+    server_socket.bind((server_address, server_port))
+    server_socket.listen(5)
+
+    inputs = [server_socket]
+    outputs = []
+    message_queues = {}
+
+    start_time = datetime.datetime.now()
+    end_time = start_time + datetime.timedelta(seconds=run_duration)
+
+    while inputs and datetime.datetime.now() < end_time:
+        readable, writable, exceptional = select.select(inputs, outputs, inputs, 0.1)
+
+        for s in readable:
+            if s is server_socket:
+                connection, client_address = s.accept()
+                connection.setblocking(0)
+                inputs.append(connection)
+                message_queues[connection] = queue.Queue()
+            else:
+                try:
+                    data = s.recv(buffer_size)
+                    if data:
+                        message_queues[s].put((data, datetime.datetime.now().strftime(""%Y-%m-%d %H:%M:%S"")))
+                        if s not in outputs:
+                            outputs.append(s)
+                    else:
+                        if s in outputs:
+                            outputs.remove(s)
+                        inputs.remove(s)
+                        s.close()
+                        del message_queues[s]
+                except ConnectionResetError:
+                    if s in outputs:
+                        outputs.remove(s)
+                    inputs.remove(s)
+                    s.close()
+                    del message_queues[s]
+
+        for s in writable:
+            try:
+                next_msg = message_queues[s].get_nowait()
+            except queue.Empty:
+                outputs.remove(s)
+            except KeyError:
+                if s in outputs:
+                    outputs.remove(s)
+                if s in inputs:
+                    inputs.remove(s)
+                s.close()
+            else:
+                data, timestamp = next_msg
+                s.sendall(data + b"" "" + timestamp.encode())
+
+        for s in exceptional:
+            inputs.remove(s)
+            if s in outputs:
+                outputs.remove(s)
+            s.close()
+            del message_queues[s]
+
+    server_socket.close()
+
+    return f""Server operation completed. Run duration: {datetime.datetime.now() - start_time}""
+",pass,,,,6/6,/data/wyk/autosd/arhe/bigcodebench5.new/1040/solution_v2_s10_o1.py

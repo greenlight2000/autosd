@@ -1,0 +1,153 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Processes a CSV file to train a Random Forest classifier and generates a formatted classification report.
+Note that: The CSV file must have a column with the name specified by 'target_column', and it should be in a format readable by pandas.read_csv().
+The function should raise the exception for: ValueError: If the specified target_column is not found in the CSV file.
+The function should output with:
+    str: A formatted classification report. The report includes metrics such as precision, recall,
+    f1-score for each class, as well as overall accuracy, macro average, and weighted average.
+You should write self-contained code starting with:
+```
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+def task_func(csv_file_path, target_column=""target"", test_size=0.2, n_estimators=100):
+```",0,0,"import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+def task_func(csv_file_path, target_column=""target"", test_size=0.2, n_estimators=100):
+
+    pass
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+def task_func(csv_file_path, target_column=""target"", test_size=0.2, n_estimators=100):
+    try:
+        data = pd.read_csv(csv_file_path)
+        if target_column not in data.columns:
+            raise ValueError(f""Specified target column '{target_column}' not found in the CSV file."")
+        
+        X = data.drop(columns=[target_column])
+        y = data[target_column]
+        
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+        
+        rf_classifier = RandomForestClassifier(n_estimators=n_estimators)
+        rf_classifier.fit(X_train, y_train)
+        
+        y_pred = rf_classifier.predict(X_test)
+        
+        report = classification_report(y_test, y_pred)
+        
+        return report
+    
+    except Exception as e:
+        return str(e)
+csv_file_path = ""data.csv""
+target_column = ""class""",fail,test_missing_target_column,"    def test_missing_target_column(self, mock_read_csv):
+        """"""
+        Test task_func with a missing target column.
+        """"""
+        mock_read_csv.return_value = pd.DataFrame(
+            {""feature1"": [1, 2], ""feature2"": [3, 4]}
+        )
+        with self.assertRaises(ValueError):
+            task_func(""dummy_path.csv"", target_column=""not_exist"")","{'stat': 'fail', 'exception_type': 'AssertionError: ValueError not raised', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 101, 'funcname': 'test_missing_target_column', 'codeline': '        with self.assertRaises(ValueError):'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""/home/mambaforge/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 101, in test_missing_target_column\nAssertionError: ValueError not raised\n'}",4/5,/data/wyk/autosd/arhe/bigcodebench5/1017/solution_v0_s0_o0.py
+"Processes a CSV file to train a Random Forest classifier and generates a formatted classification report.
+Note that: The CSV file must have a column with the name specified by 'target_column', and it should be in a format readable by pandas.read_csv().
+The function should raise the exception for: ValueError: If the specified target_column is not found in the CSV file.
+The function should output with:
+    str: A formatted classification report. The report includes metrics such as precision, recall,
+    f1-score for each class, as well as overall accuracy, macro average, and weighted average.
+You should write self-contained code starting with:
+```
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+def task_func(csv_file_path, target_column=""target"", test_size=0.2, n_estimators=100):
+```",3,1,"
+def task_func(csv_file_path, target_column=""target"", test_size=0.2, n_estimators=100):
+    try:
+        data = pd.read_csv(csv_file_path)
+        if target_column not in data.columns:
+            raise ValueError(f""Specified target column '{target_column}' not found in the CSV file."")
+        
+        X = data.drop(columns=[target_column])
+        y = data[target_column]
+        
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+        
+        rf_classifier = RandomForestClassifier(n_estimators=n_estimators)
+        rf_classifier.fit(X_train, y_train)
+        
+        y_pred = rf_classifier.predict(X_test)
+        
+        report = classification_report(y_test, y_pred)
+        
+        return report
+    
+    except Exception as e:
+        return str(e)
+",fail,test_default_parameters,"    def test_default_parameters(self, mock_read_csv):
+        """"""
+        Test task_func with default parameters using an adequately sized mock dataset.
+        """"""
+        mock_data = {
+            ""feature1"": range(100),
+            ""feature2"": range(100, 200),
+            ""target"": [0, 1] * 50,  # Alternating 0s and 1s
+        }
+        mock_read_csv.return_value = pd.DataFrame(mock_data)
+        result = task_func(""dummy_path.csv"")
+        self.assertIn(""precision"", result)","{'stat': 'fail', 'exception_type': 'AssertionError: \'precision\' not found in ""name \'train_test_split\' is not defined""', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 42, 'funcname': 'test_default_parameters', 'codeline': '        self.assertIn(""precision"", result)'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""/data/wyk/.conda/envs/bigcodebench/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 42, in test_default_parameters\nAssertionError: \'precision\' not found in ""name \'train_test_split\' is not defined""\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5/1017/solution_v1_s3_o0.py
+"Processes a CSV file to train a Random Forest classifier and generates a formatted classification report.
+Note that: The CSV file must have a column with the name specified by 'target_column', and it should be in a format readable by pandas.read_csv().
+The function should raise the exception for: ValueError: If the specified target_column is not found in the CSV file.
+The function should output with:
+    str: A formatted classification report. The report includes metrics such as precision, recall,
+    f1-score for each class, as well as overall accuracy, macro average, and weighted average.
+You should write self-contained code starting with:
+```
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+def task_func(csv_file_path, target_column=""target"", test_size=0.2, n_estimators=100):
+```",10,2,"
+def task_func(csv_file_path, target_column=""target"", test_size=0.2, n_estimators=100):
+    try:
+        data = pd.read_csv(csv_file_path)
+        if target_column not in data.columns:
+            raise ValueError(f""Specified target column '{target_column}' not found in the CSV file."")
+        
+        X = data.drop(columns=[target_column])
+        y = data[target_column]
+        
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+        
+        rf_classifier = RandomForestClassifier(n_estimators=n_estimators)
+        rf_classifier.fit(X_train, y_train)
+        
+        y_pred = rf_classifier.predict(X_test)
+        
+        report = classification_report(y_test, y_pred)
+        
+        return report
+    
+    except Exception as e:
+        return str(e)
+",fail,test_default_parameters,"    def test_default_parameters(self, mock_read_csv):
+        """"""
+        Test task_func with default parameters using an adequately sized mock dataset.
+        """"""
+        mock_data = {
+            ""feature1"": range(100),
+            ""feature2"": range(100, 200),
+            ""target"": [0, 1] * 50,  # Alternating 0s and 1s
+        }
+        mock_read_csv.return_value = pd.DataFrame(mock_data)
+        result = task_func(""dummy_path.csv"")
+        self.assertIn(""precision"", result)","{'stat': 'fail', 'exception_type': 'AssertionError: \'precision\' not found in ""name \'train_test_split\' is not defined""', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 42, 'funcname': 'test_default_parameters', 'codeline': '        self.assertIn(""precision"", result)'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""/data/wyk/.conda/envs/bigcodebench/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 42, in test_default_parameters\nAssertionError: \'precision\' not found in ""name \'train_test_split\' is not defined""\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5/1017/solution_v2_s10_o0.py

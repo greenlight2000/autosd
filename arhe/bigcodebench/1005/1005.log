@@ -1,0 +1,76 @@
+2025-03-25 01:21:42  INFO     [main.py -> update_solution_logs]: Focused test method changed from None to test_extraction_path_already_exists. Pass Rate changed from None to 1/5
+2025-03-25 01:21:42  INFO     [main.py -> get_solutions]: 
+==================================================
+Start Debugging on Task BigCodeBench/1005
+==================================================
+2025-03-25 01:21:43  INFO     [main.py -> get_solutions]: 
+--------------------------------------------------
+Start Debugging on Task BigCodeBench/1005 Solution 0@Step0:
+import urllib.request
+import zipfile
+import os
+import urllib.error
+def task_func(
+    url: str,
+    save_path: str = "downloaded_file.zip",
+    extract_path: str = "extracted_files",
+) -> str:
+
+    pass
+import urllib.request
+import zipfile
+import os
+import urllib.error
+def task_func(
+    url: str,
+    save_path: str = "downloaded_file.zip",
+    extract_path: str = "extracted_files",
+) -> str:
+    try:
+        # Download the ZIP file from the specified URL
+        urllib.request.urlretrieve(url, save_path)
+        
+        # Extract the contents of the ZIP file
+        with zipfile.ZipFile(save_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_path)
+        
+        # Delete the downloaded ZIP file
+        os.remove(save_path)
+        
+        return os.path.abspath(extract_path)
+    
+    except urllib.error.URLError as e:
+        return f"URL Error: {str(e)}"
+    
+    except zipfile.BadZipFile:
+        return "Error: Corrupted ZIP file"
+    
+    except FileNotFoundError:
+        return "Error: File not found"
+    
+    except Exception as e:
+        return f"Error: {str(e)}"
+url = "https://example.com/example.zip"
+Status: fail
+Details: {'test_extraction_path_already_exists': {'stat': 'fail', 'exception_type': "AssertionError: 'URL Error: HTTP Error 403: Forbidden' != PosixPath('/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/existing_extract_path')", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 105, 'funcname': 'test_extraction_path_already_exists', 'codeline': '        self.assertEqual(result_path, extract_path)'}], 'traceback_str': 'Traceback (most recent call last):\n  File "__test__.py", line 105, in test_extraction_path_already_exists\nAssertionError: \'URL Error: HTTP Error 403: Forbidden\' != PosixPath(\'/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/existing_extract_path\')\n'}, 'test_file_already_exists_at_save_path': {'stat': 'fail', 'exception_type': "AssertionError: 'URL Error: HTTP Error 403: Forbidden' != PosixPath('/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/existing_file_extract')", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 94, 'funcname': 'test_file_already_exists_at_save_path', 'codeline': '        self.assertEqual(result_path, extract_path)'}], 'traceback_str': 'Traceback (most recent call last):\n  File "__test__.py", line 94, in test_file_already_exists_at_save_path\nAssertionError: \'URL Error: HTTP Error 403: Forbidden\' != PosixPath(\'/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/existing_file_extract\')\n'}, 'test_successful_download_and_extraction_sample_1': {'stat': 'fail', 'exception_type': "AssertionError: 'URL Error: HTTP Error 403: Forbidden' != PosixPath('/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/sample_1_extract')", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 66, 'funcname': 'test_successful_download_and_extraction_sample_1', 'codeline': '        self.assertEqual(result_path, extract_path)'}], 'traceback_str': 'Traceback (most recent call last):\n  File "__test__.py", line 66, in test_successful_download_and_extraction_sample_1\nAssertionError: \'URL Error: HTTP Error 403: Forbidden\' != PosixPath(\'/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/sample_1_extract\')\n'}, 'test_successful_download_and_extraction_sample_2': {'stat': 'fail', 'exception_type': "AssertionError: 'URL Error: HTTP Error 403: Forbidden' != PosixPath('/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/sample_2_extract')", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 75, 'funcname': 'test_successful_download_and_extraction_sample_2', 'codeline': '        self.assertEqual(result_path, extract_path)'}], 'traceback_str': 'Traceback (most recent call last):\n  File "__test__.py", line 75, in test_successful_download_and_extraction_sample_2\nAssertionError: \'URL Error: HTTP Error 403: Forbidden\' != PosixPath(\'/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/sample_2_extract\')\n'}}
+--------------------------------------------------
+2025-03-25 01:22:55  ERROR    [main.py -> get_solutions]: Error on task BigCodeBench/1005 solution 0 at step 4: 'utf-8' codec can't decode byte 0xe2 in position 0: unexpected end of data
+traceback: Traceback (most recent call last):
+  File "/data/wyk/autosd/arhe/main.py", line 610, in get_solutions
+    prompt_builder.take_steps(n_steps=task_left_steps)
+  File "/data/wyk/autosd/arhe/main.py", line 324, in take_steps
+    self.single_step()
+  File "/data/wyk/autosd/arhe/main.py", line 276, in single_step
+    self.cur_exec_observation = self._exec_pdb_command(self.cur_debugger_cmd)
+  File "/data/wyk/autosd/arhe/main.py", line 245, in _exec_pdb_command
+    output_obj = self._pdbw.execute_command(debugger_cmd, with_unroll=with_unroll)
+  File "/data/wyk/autosd/arhe/main.py", line 88, in execute_command
+    stdout_read = self._send_command(cmd)
+  File "/data/wyk/autosd/arhe/main.py", line 83, in _send_command
+    out = self._read_stdout_to_prompt()
+  File "/data/wyk/autosd/arhe/main.py", line 72, in _read_stdout_to_prompt
+    next_char = self._pdb.stdout.read(1).decode()
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe2 in position 0: unexpected end of data
+
+2025-03-25 01:22:55  INFO     [main.py -> get_solutions]: ==================================================Task BigCodeBench/1005 Total comuptation consumption:
+input tokens=0, output tokens=0, model calls=0

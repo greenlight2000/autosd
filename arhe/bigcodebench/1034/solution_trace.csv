@@ -1,0 +1,95 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Compares and visualizes the sales data of two stores for predefined categories. The function generates a bar plot for categories where both stores have sales exceeding a specified threshold. The Euclidean distance between the two series is also computed.
+The function should output with:
+    matplotlib.axes.Axes or None: A bar plot for categories where both stores' sales exceed the threshold of 200,
+    or None if no such categories exist.
+    float: The Euclidean distance between the two series or 0.0 if no categories meet the threshold.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import numpy as np
+CATEGORIES = [""Electronics"", ""Clothing"", ""Home Decor"", ""Automotive"", ""Books""]
+def task_func(s1, s2):
+```",0,0,"import pandas as pd
+import numpy as np
+CATEGORIES = [""Electronics"", ""Clothing"", ""Home Decor"", ""Automotive"", ""Books""]
+def task_func(s1, s2):
+
+    pass
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+CATEGORIES = [""Electronics"", ""Clothing"", ""Home Decor"", ""Automotive"", ""Books""]
+def task_func(s1, s2):
+    threshold = 200
+    common_categories = [cat for cat in CATEGORIES if s1[cat] > threshold and s2[cat] > threshold]
+
+    if not common_categories:
+        return None, 0.0
+
+    sales_s1 = [s1[cat] for cat in common_categories]
+    sales_s2 = [s2[cat] for cat in common_categories]
+
+    euclidean_distance = np.linalg.norm(np.array(sales_s1) - np.array(sales_s2))
+
+    plt.bar(common_categories, sales_s1, color='b', alpha=0.7, label='Store 1')
+    plt.bar(common_categories, sales_s2, color='r', alpha=0.7, label='Store 2')
+    plt.xlabel('Categories')
+    plt.ylabel('Sales')
+    plt.title('Sales Data Comparison')
+    plt.legend()
+    plt.show()
+
+    return plt.gca(), euclidean_distance
+s1 = {""Electronics"": 250, ""Clothing"": 180, ""Home Decor"": 300, ""Automotive"": 220, ""Books"": 190}
+s2 = {""Electronics"": 230, ""Clothing"": 210, ""Home Decor"": 280, ""Automotive"": 190, ""Books"": 220}",fail,test_sales_above_threshold,"    def test_sales_above_threshold(self):
+        """"""Test that the function returns a plot when sales exceed the threshold""""""
+        np.random.seed(seed=32)
+        s1 = pd.Series(np.random.randint(100, 500, size=5), index=CATEGORIES)
+        np.random.seed(seed=32)
+        s2 = pd.Series(np.random.randint(150, 600, size=5), index=CATEGORIES)
+        ax, edit_distance = task_func(s1, s2)
+        # Check the correct categories are plotted
+        categories_plotted = [label.get_text() for label in ax.get_xticklabels()]
+        self.assertListEqual(
+            categories_plotted, [""Electronics"", ""Home Decor"", ""Automotive"", ""Books""]
+        )
+        # Check the title of the plot
+        self.assertEqual(
+            ax.get_title(), ""Sales Comparison Above Threshold in Categories""
+        )
+        self.assertAlmostEqual(edit_distance, 100.0)","{'stat': 'fail', 'exception_type': ""AssertionError: 'Sales Data Comparison' != 'Sales Comparison Above Threshold in Categories'\n- Sales Data Comparison\n+ Sales Comparison Above Threshold in Categories\n"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 55, 'funcname': 'test_sales_above_threshold', 'codeline': '        self.assertEqual('}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 55, in test_sales_above_threshold\nAssertionError: \'Sales Data Comparison\' != \'Sales Comparison Above Threshold in Categories\'\n- Sales Data Comparison\n+ Sales Comparison Above Threshold in Categories\n\n'}",4/5,/data/wyk/autosd/arhe/bigcodebench5.new/1034/solution_v0_s0_o0.py
+"Compares and visualizes the sales data of two stores for predefined categories. The function generates a bar plot for categories where both stores have sales exceeding a specified threshold. The Euclidean distance between the two series is also computed.
+The function should output with:
+    matplotlib.axes.Axes or None: A bar plot for categories where both stores' sales exceed the threshold of 200,
+    or None if no such categories exist.
+    float: The Euclidean distance between the two series or 0.0 if no categories meet the threshold.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import numpy as np
+CATEGORIES = [""Electronics"", ""Clothing"", ""Home Decor"", ""Automotive"", ""Books""]
+def task_func(s1, s2):
+```",10,1,"
+def task_func(s1, s2):
+    threshold = 200
+    common_categories = [cat for cat in CATEGORIES if s1[cat] > threshold and s2[cat] > threshold]
+
+    if not common_categories:
+        return None, 0.0
+
+    sales_s1 = [s1[cat] for cat in common_categories]
+    sales_s2 = [s2[cat] for cat in common_categories]
+
+    euclidean_distance = np.linalg.norm(np.array(sales_s1) - np.array(sales_s2))
+
+    plt.bar(common_categories, sales_s1, color='b', alpha=0.7, label='Store 1')
+    plt.bar(common_categories, sales_s2, color='r', alpha=0.7, label='Store 2')
+    plt.xlabel('Categories')
+    plt.ylabel('Sales')
+    plt.title('Sales Comparison Above Threshold in Categories')  # Updated title
+    plt.legend()
+    plt.show()
+
+    return plt.gca(), euclidean_distance
+",pass,,,,5/5,/data/wyk/autosd/arhe/bigcodebench5.new/1034/solution_v1_s10_o1.py

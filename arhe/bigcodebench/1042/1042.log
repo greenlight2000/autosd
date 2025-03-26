@@ -1,0 +1,17 @@
+2025-03-25 11:56:58  INFO     [main.py -> update_solution_logs]: Focused test method changed from None to test_email_with_empty_message. Pass Rate changed from None to 0/5
+2025-03-25 11:56:58  INFO     [main.py -> get_solutions]: 
+==================================================
+Start Debugging on Task BigCodeBench/1042
+==================================================
+2025-03-25 13:27:47  ERROR    [main.py -> get_solutions]: Error on task BigCodeBench/1042 solution 0 at step 6: 
+traceback: Traceback (most recent call last):
+  File "/data/wyk/autosd/arhe/main.py", line 608, in get_solutions
+    prompt_builder = PromptBuilder(ephemeral_file, self._template_file, verbose=DEBUG, output_file=f"{task_output_dir}/agent_trace.csv")
+  File "/data/wyk/autosd/arhe/main.py", line 123, in __init__
+    self._error_msg = get_error_msg_from(function_file)
+  File "/data/wyk/autosd/arhe/main.py", line 57, in get_error_msg_from
+    assert len(error_msg) != 0
+AssertionError
+
+2025-03-25 13:27:47  INFO     [main.py -> get_solutions]: ==================================================Task BigCodeBench/1042 Total comuptation consumption:
+input tokens=0, output tokens=0, model calls=0

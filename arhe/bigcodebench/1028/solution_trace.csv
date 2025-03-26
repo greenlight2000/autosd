@@ -1,0 +1,119 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Monitors and logs CPU usage at specified intervals over a given duration.
+Note that: Actual run time of the function may slightly exceed the specified 'duration' due to processing time and system response delay. The function records the CPU usage percentage at regular intervals for a specified duration. The data is captured every 'interval' seconds until the 'duration' is reached or exceeded. Each record includes a timestamp and the CPU usage percentage at that moment. The data is saved in JSON format in a log file named 'logfile.log'. The function supports different commands for CPU usage monitoring on Windows and Unix/Linux platforms.
+The function should raise the exception for: ValueError: If either 'interval' or 'duration' is less than or equal to zero.
+The function should output with:
+    str: Path to the log file where CPU usage data is saved. Returns None if an IOError occurs during file operations.
+You should write self-contained code starting with:
+```
+import subprocess
+import time
+import json
+import platform
+LOGFILE_PATH = ""logfile.log""
+def task_func(interval, duration):
+```",0,0,"import subprocess
+import time
+import json
+import platform
+LOGFILE_PATH = ""logfile.log""
+def task_func(interval, duration):
+
+    pass
+import subprocess
+import time
+import json
+import platform
+LOGFILE_PATH = ""logfile.log""
+def task_func(interval, duration):
+    if interval <= 0 or duration <= 0:
+        raise ValueError(""Interval and duration must be greater than zero."")
+
+    data = []
+    start_time = time.time()
+
+    while time.time() - start_time < duration:
+        timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        if platform.system() == 'Windows':
+            result = subprocess.check_output([""wmic"", ""cpu"", ""get"", ""loadpercentage""])
+            cpu_usage = int(result.split()[1])
+        else:
+            result = subprocess.check_output(""top -bn1 | grep 'Cpu(s)'"", shell=True)
+            cpu_usage = float(result.split()[1].decode('utf-8'))
+
+        data.append({""timestamp"": timestamp, ""cpu_usage"": cpu_usage})
+        time.sleep(interval)
+
+    try:
+        with open(LOGFILE_PATH, 'w') as file:
+            json.dump(data, file, indent=4)
+        return LOGFILE_PATH
+    except IOError:
+        return None",error,test_subprocess_output_handling_linux,"    def test_subprocess_output_handling_linux(
+        self, mock_platform, mock_time, mock_subprocess
+    ):
+        """"""
+        Test handling of subprocess output on Linux.
+        It should correctly parse the CPU usage from the subprocess output.
+        """"""
+        mock_platform.return_value = ""Linux""
+        mock_time.side_effect = iter(range(0, 100, 5))
+        mock_output = b""Linux 4.15.0-54-generic (ubuntu) \nTasks: 195 total...\n%Cpu(s):  5.0 us,  2.0 sy,  0.0 ni, 92.0 id,  0.0 wa,  0.0 hi,  1.0 si,  0.0 st\n""
+        mock_subprocess.return_value = mock_output
+        result = task_func(5, 10)
+        self.assertEqual(result, self.logfile_path)","{'stat': 'error', 'exception_type': ""ValueError: could not convert string to float: '4.15.0-54-generic'"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 112, 'funcname': 'test_subprocess_output_handling_linux', 'codeline': '        result = task_func(5, 10)'}, {'filename': '__test__.py', 'lineno': 28, 'funcname': 'task_func', 'codeline': ""            cpu_usage = float(result.split()[1].decode('utf-8'))""}], 'traceback_str': 'Traceback (most recent call last):\n  File ""/home/mambaforge/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 112, in test_subprocess_output_handling_linux\n  File ""__test__.py"", line 28, in task_func\nValueError: could not convert string to float: \'4.15.0-54-generic\'\n'}",4/6,/data/wyk/autosd/arhe/bigcodebench5/1028/solution_v0_s0_o0.py
+"Monitors and logs CPU usage at specified intervals over a given duration.
+Note that: Actual run time of the function may slightly exceed the specified 'duration' due to processing time and system response delay. The function records the CPU usage percentage at regular intervals for a specified duration. The data is captured every 'interval' seconds until the 'duration' is reached or exceeded. Each record includes a timestamp and the CPU usage percentage at that moment. The data is saved in JSON format in a log file named 'logfile.log'. The function supports different commands for CPU usage monitoring on Windows and Unix/Linux platforms.
+The function should raise the exception for: ValueError: If either 'interval' or 'duration' is less than or equal to zero.
+The function should output with:
+    str: Path to the log file where CPU usage data is saved. Returns None if an IOError occurs during file operations.
+You should write self-contained code starting with:
+```
+import subprocess
+import time
+import json
+import platform
+LOGFILE_PATH = ""logfile.log""
+def task_func(interval, duration):
+```",10,1,"
+def task_func(interval, duration):
+    if interval <= 0 or duration <= 0:
+        raise ValueError(""Interval and duration must be greater than zero."")
+
+    data = []
+    start_time = time.time()
+
+    while time.time() - start_time < duration:
+        timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        if platform.system() == 'Windows':
+            result = subprocess.check_output([""wmic"", ""cpu"", ""get"", ""loadpercentage""])
+            cpu_usage = int(result.split()[1])
+        else:
+            result = subprocess.check_output(""top -bn1 | grep 'Cpu(s)'"", shell=True)
+            # Ensure result is a single contiguous byte string
+            if isinstance(result, list):
+                result = b''.join(result)
+            # Decode the entire result object from bytes to a string
+            decoded_result = result.decode('utf-8')
+            # Split the decoded string into components
+            components = decoded_result.split()
+            # Locate the '%Cpu(s):' label and extract the subsequent CPU usage value
+            cpu_label_index = components.index('%Cpu(s):')
+            cpu_usage = float(components[cpu_label_index + 1].split(',')[0])
+
+        data.append({""timestamp"": timestamp, ""cpu_usage"": cpu_usage})
+        time.sleep(interval)
+
+    try:
+        with open(LOGFILE_PATH, 'w') as file:
+            json.dump(data, file, indent=4)
+        return LOGFILE_PATH
+    except IOError:
+        return None
+",error,test_io_error_handling,"    def test_io_error_handling(self, mock_open):
+        """"""
+        Test the function's behavior when an IOError occurs during file operations.
+        It should handle the error and return None.
+        """"""
+        result = task_func(5, 10)
+        self.assertIsNone(result)","{'stat': 'error', 'exception_type': ""NameError: name 'time' is not defined"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 118, 'funcname': 'test_io_error_handling', 'codeline': '        result = task_func(5, 10)'}, {'filename': '__test__.py', 'lineno': 7, 'funcname': 'task_func', 'codeline': '    start_time = time.time()'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""/data/wyk/.conda/envs/bigcodebench/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 118, in test_io_error_handling\n  File ""__test__.py"", line 7, in task_func\nNameError: name \'time\' is not defined\n'}",2/6,/data/wyk/autosd/arhe/bigcodebench5/1028/solution_v1_s10_o0.py

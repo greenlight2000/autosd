@@ -1,0 +1,103 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"This function scrapes a webpage for all hyperlinks and saves them as absolute URLs to a CSV file.
+The function should output with:
+    int: The number of unique absolute links scraped from the webpage.
+You should write self-contained code starting with:
+```
+import requests
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+import csv
+def task_func(
+    url: str,
+    base_url: str = ""https://www.example.com"",
+    csv_file: str = ""scraped_data.csv"",
+) -> int:
+```",0,0,"import requests
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+import csv
+def task_func(
+    url: str,
+    base_url: str = ""https://www.example.com"",
+    csv_file: str = ""scraped_data.csv"",
+) -> int:
+
+    pass
+import requests
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+import csv
+def task_func(
+    url: str,
+    base_url: str = ""https://www.example.com"",
+    csv_file: str = ""scraped_data.csv"",
+) -> int:
+    unique_links = set()
+    
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    for link in soup.find_all('a', href=True):
+        absolute_link = urljoin(base_url, link.get('href'))
+        unique_links.add(absolute_link)
+    
+    with open(csv_file, 'w', newline='') as file:
+        writer = csv.writer(file)
+        for link in unique_links:
+            writer.writerow([link])
+    
+    return len(unique_links)
+url = ""https://www.example.com""",error,test_duplicate_links,"    def test_duplicate_links(self, mock_get):
+        """"""
+        Test the function with a webpage containing duplicate links.
+        """"""
+        mock_get.return_value = MagicMock(
+            text='<html><a href=""link.html"">Link</a><a href=""link.html"">Link</a></html>'
+        )
+        result = task_func(""/duplicate-links"")
+        self.assertEqual(result, 1)","{'stat': 'error', 'exception_type': 'TypeError: expected string or bytes-like object', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 79, 'funcname': 'test_duplicate_links', 'codeline': '        result = task_func(""/duplicate-links"")'}, {'filename': '__test__.py', 'lineno': 24, 'funcname': 'task_func', 'codeline': ""    soup = BeautifulSoup(response.content, 'html.parser')""}], 'traceback_str': 'Traceback (most recent call last):\n  File ""/home/mambaforge/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 79, in test_duplicate_links\n  File ""__test__.py"", line 24, in task_func\n  File ""/home/wyk/.local/lib/python3.10/site-packages/bs4/__init__.py"", line 319, in __init__\n    for (self.markup, self.original_encoding, self.declared_html_encoding,\n  File ""/home/wyk/.local/lib/python3.10/site-packages/bs4/builder/_htmlparser.py"", line 325, in prepare_markup\n    dammit = UnicodeDammit(markup, try_encodings, is_html=True,\n  File ""/home/wyk/.local/lib/python3.10/site-packages/bs4/dammit.py"", line 445, in __init__\n    for encoding in self.detector.encodings:\n  File ""/home/wyk/.local/lib/python3.10/site-packages/bs4/dammit.py"", line 301, in encodings\n    self.declared_encoding = self.find_declared_encoding(\n  File ""/home/wyk/.local/lib/python3.10/site-packages/bs4/dammit.py"", line 378, in find_declared_encoding\n    declared_encoding_match = xml_re.search(markup, endpos=xml_endpos)\nTypeError: expected string or bytes-like object\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5/1013/solution_v0_s0_o0.py
+"This function scrapes a webpage for all hyperlinks and saves them as absolute URLs to a CSV file.
+The function should output with:
+    int: The number of unique absolute links scraped from the webpage.
+You should write self-contained code starting with:
+```
+import requests
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+import csv
+def task_func(
+    url: str,
+    base_url: str = ""https://www.example.com"",
+    csv_file: str = ""scraped_data.csv"",
+) -> int:
+```",10,1,"
+def task_func(
+    url: str,
+    base_url: str = ""https://www.example.com"",
+    csv_file: str = ""scraped_data.csv"",
+) -> int:
+    unique_links = set()
+    
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    for link in soup.find_all('a', href=True):
+        absolute_link = urljoin(base_url, link.get('href'))
+        unique_links.add(absolute_link)
+    
+    with open(csv_file, 'w', newline='') as file:
+        writer = csv.writer(file)
+        for link in unique_links:
+            writer.writerow([link])
+    
+    return len(unique_links)
+",error,test_duplicate_links,"    def test_duplicate_links(self, mock_get):
+        """"""
+        Test the function with a webpage containing duplicate links.
+        """"""
+        mock_get.return_value = MagicMock(
+            text='<html><a href=""link.html"">Link</a><a href=""link.html"">Link</a></html>'
+        )
+        result = task_func(""/duplicate-links"")
+        self.assertEqual(result, 1)","{'stat': 'error', 'exception_type': ""NameError: name 'BeautifulSoup' is not defined"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 65, 'funcname': 'test_duplicate_links', 'codeline': '        result = task_func(""/duplicate-links"")'}, {'filename': '__test__.py', 'lineno': 10, 'funcname': 'task_func', 'codeline': ""    soup = BeautifulSoup(response.content, 'html.parser')""}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""/data/wyk/.conda/envs/bigcodebench/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 65, in test_duplicate_links\n  File ""__test__.py"", line 10, in task_func\nNameError: name \'BeautifulSoup\' is not defined\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5/1013/solution_v1_s10_o0.py

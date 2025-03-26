@@ -1,0 +1,86 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Calculate and plot the daytime temperatures for New York over a given period. The plot uses Arial font for display. for the returned plot,  set the xlabel as 'Date', ylabel as 'Temperature (°C)' and title as Daily Temperatures in New York
+The function should raise the exception for: ValueError: If the input DataFrame is not in the expected format or empty.
+The function should output with:
+    matplotlib.axes.Axes: The Axes object containing the temperature plot.
+You should write self-contained code starting with:
+```
+import matplotlib.pyplot as plt
+import pandas as pd
+def task_func(temperatures):
+```",0,0,"import matplotlib.pyplot as plt
+import pandas as pd
+def task_func(temperatures):
+
+    pass
+import matplotlib.pyplot as plt
+import pandas as pd
+def task_func(temperatures):
+    if not isinstance(temperatures, pd.DataFrame) or temperatures.empty:
+        raise ValueError(""Input DataFrame is not in the expected format or empty"")
+
+    plt.rcParams['font.family'] = 'Arial'
+    fig, ax = plt.subplots()
+    ax.plot(temperatures.index, temperatures['Temperature'], color='blue')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Temperature (°C)')
+    ax.set_title('Daily Temperatures in New York')
+
+    return ax",error,test_basic_functionality,"    def test_basic_functionality(self):
+        ax = task_func(self.temperatures)
+        self.assertIsInstance(ax, plt.Axes)","{'stat': 'error', 'exception_type': ""KeyError: 'Temperature'"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 32, 'funcname': 'test_basic_functionality', 'codeline': '        ax = task_func(self.temperatures)'}, {'filename': '__test__.py', 'lineno': 14, 'funcname': 'task_func', 'codeline': ""    ax.plot(temperatures.index, temperatures['Temperature'], color='blue')""}], 'traceback_str': 'Traceback (most recent call last):\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/indexes/base.py"", line 3653, in get_loc\n    return self._engine.get_loc(casted_key)\n  File ""pandas/_libs/index.pyx"", line 147, in pandas._libs.index.IndexEngine.get_loc\n  File ""pandas/_libs/index.pyx"", line 176, in pandas._libs.index.IndexEngine.get_loc\n  File ""pandas/_libs/hashtable_class_helper.pxi"", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item\n  File ""pandas/_libs/hashtable_class_helper.pxi"", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item\nKeyError: \'Temperature\'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File ""__test__.py"", line 32, in test_basic_functionality\n  File ""__test__.py"", line 14, in task_func\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/frame.py"", line 3761, in __getitem__\n    indexer = self.columns.get_loc(key)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/indexes/base.py"", line 3655, in get_loc\n    raise KeyError(key) from err\nKeyError: \'Temperature\'\n'}",1/6,/data/wyk/autosd/arhe/bigcodebench5/103/solution_v0_s0_o0.py
+"Calculate and plot the daytime temperatures for New York over a given period. The plot uses Arial font for display. for the returned plot,  set the xlabel as 'Date', ylabel as 'Temperature (°C)' and title as Daily Temperatures in New York
+The function should raise the exception for: ValueError: If the input DataFrame is not in the expected format or empty.
+The function should output with:
+    matplotlib.axes.Axes: The Axes object containing the temperature plot.
+You should write self-contained code starting with:
+```
+import matplotlib.pyplot as plt
+import pandas as pd
+def task_func(temperatures):
+```",10,1,"
+def task_func(temperatures):
+    if not isinstance(temperatures, pd.DataFrame) or temperatures.empty:
+        raise ValueError(""Input DataFrame is not in the expected format or empty"")
+
+    plt.rcParams['font.family'] = 'Arial'
+    fig, ax = plt.subplots()
+    ax.plot(temperatures.index, temperatures['Temperature'], color='blue')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Temperature (°C)')
+    ax.set_title('Daily Temperatures in New York')
+
+    return ax
+
+class TestCases(unittest.TestCase):
+    def setUp(self):
+        self.temperatures = pd.DataFrame({
+            'Temperature': [random.randint(-10, 30) for _ in range(365)],
+            'date': pd.date_range(start='01-01-2023', periods=365, tz='America/New_York')
+        }).set_index('date')
+
+    def test_basic_functionality(self):
+        ax = task_func(self.temperatures)
+
+    def test_empty_dataframe(self):
+            task_func(pd.DataFrame())
+
+    def test_incorrect_dataframe(self):
+        incorrect_df = pd.DataFrame({'temp': [20, 21], 'time': [datetime.now(), datetime.now()]})
+            task_func(incorrect_df)
+
+    def test_data_on_plot(self):
+        ax = task_func(self.temperatures)
+
+    def test_plot_labels_and_title(self):
+        ax = task_func(self.temperatures)
+
+    def test_value_consistency(self):
+        ax = task_func(self.temperatures)
+        line = ax.get_lines()[0]
+        plot_dates = line.get_xdata()
+        plot_temperatures = line.get_ydata()
+        for date, temperature in zip(plot_dates, plot_temperatures):
+",sys_error,test_basic_functionality,"    def test_basic_functionality(self):
+        ax = task_func(self.temperatures)
+        self.assertIsInstance(ax, plt.Axes)","{'stat': 'sys_error', 'exception_type': 'IndentationError(\'unexpected indent\', (\'__test__.py\', 30, 12, \'            task_func(incorrect_df)\\n\', 30, -1))\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 30\n    task_func(incorrect_df)\nIndentationError: unexpected indent\n', 'stdout_logs': '', 'traceback_frame': [], 'traceback_str': 'IndentationError(\'unexpected indent\', (\'__test__.py\', 30, 12, \'            task_func(incorrect_df)\\n\', 30, -1))\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 30\n    task_func(incorrect_df)\nIndentationError: unexpected indent\n'}",0/6,/data/wyk/autosd/arhe/bigcodebench5/103/solution_v1_s10_o0.py

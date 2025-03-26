@@ -1,0 +1,58 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"This function generates and displays a bar chart representing random letter-number pairs. Each bar corresponds to a unique pair, formed by combining a letter from 'a' to 'z' with a number from 1 to 26. The function randomly shuffles these pairs and assigns a random count to each.
+Note that: Notes: Each call to this function will likely produce a different chart because it shuffles the order of the pairs and assigns random counts to them. The random counts assigned to each pair range from 1 to 9.
+The function should raise the exception for: ValueError: If 'n_pairs' is outside the range of 1 to 26, inclusive. This ensures that the function operates within the bounds of the predefined letters ('a' to 'z') and numbers (1 to 26).
+The function should output with:
+    matplotlib.container.BarContainer: This object represents the bar chart created by the function.
+    Each bar in the chart is labeled with its corresponding letter-number pair (e.g., 'a:1', 'b:2').
+    The title of the chart is ""Random Letter:Number Pairs Chart"", the x-axis label is ""Letter:Number Pairs"",
+    and the y-axis label is ""Counts"".
+You should write self-contained code starting with:
+```
+import numpy as np
+import random
+import matplotlib.pyplot as plt
+# Constants
+LETTERS = list(""abcdefghijklmnopqrstuvwxyz"")
+NUMBERS = list(range(1, 27))
+def task_func(n_pairs=26):
+```",0,0,"import numpy as np
+import random
+import matplotlib.pyplot as plt
+# Constants
+LETTERS = list(""abcdefghijklmnopqrstuvwxyz"")
+NUMBERS = list(range(1, 27))
+def task_func(n_pairs=26):
+
+    pass
+def task_func(n_pairs=26):
+    if n_pairs < 1 or n_pairs > 26:
+        raise ValueError(""'n_pairs' must be within the range of 1 to 26, inclusive."")
+
+    pairs = [(letter, number) for letter in LETTERS for number in NUMBERS]
+    random.shuffle(pairs)
+    counts = [random.randint(1, 9) for _ in range(n_pairs)]
+
+    pairs = pairs[:n_pairs]
+    counts = counts[:n_pairs]
+
+    labels = [f""{pair[0]}:{pair[1]}"" for pair in pairs]
+
+    plt.figure(figsize=(12, 6))
+    bars = plt.bar(range(n_pairs), counts, tick_label=labels)
+    plt.title(""Random Letter:Number Pairs Chart"")
+    plt.xlabel(""Letter:Number Pairs"")
+    plt.ylabel(""Counts"")
+
+    return bars",fail,test_valid_pairs,"    def test_valid_pairs(self):
+        """"""Verify that the pairs generated are valid and correspond to the expected letter:number format.""""""
+        random.seed(4)
+        ax = task_func(5)
+        expected_pairs = [""a:1"", ""b:2"", ""c:3"", ""d:4"", ""e:5""]
+        generated_pairs = [bar.get_label() for bar in ax]
+        for expected_pair in expected_pairs:
+            self.assertIn(
+                expected_pair,
+                generated_pairs,
+                f""Expected pair {expected_pair} not found in plotted pairs."",
+            )","{'stat': 'fail', 'exception_type': ""AssertionError: 'a:1' not found in ['_nolegend_', '_nolegend_', '_nolegend_', '_nolegend_', '_nolegend_'] : Expected pair a:1 not found in plotted pairs."", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 80, 'funcname': 'test_valid_pairs', 'codeline': '            self.assertIn('}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 80, in test_valid_pairs\nAssertionError: \'a:1\' not found in [\'_nolegend_\', \'_nolegend_\', \'_nolegend_\', \'_nolegend_\', \'_nolegend_\'] : Expected pair a:1 not found in plotted pairs.\n'}",4/5,/data/wyk/autosd/arhe/bigcodebench5.new/1056/solution_v0_s0_o0.py

@@ -1,0 +1,157 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"This function processes a text dataset from a CSV file, performs text vectorization while excluding specific stopwords, and creates a histogram of the ten most common words. The function is robust to different input scenarios, such as empty data or data containing only stopwords.
+The function should output with:
+    matplotlib Axes object: If save_path is not provided and valid words are found in the input, the function
+    displays the histogram plot and returns the matplotlib Axes object.
+    None: In two scenarios:
+    1. If save_path is provided, saves the plot to the specified location and returns None.
+    2. If the input file is empty or contains only stop words, prints a message and returns None.
+You should write self-contained code starting with:
+```
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+import matplotlib.pyplot as plt
+# Constants
+STOP_WORDS = [""a"", ""an"", ""the"", ""in"", ""on"", ""at"", ""and"", ""or""]
+def task_func(file_path, save_path=None):
+```",0,0,"import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+import matplotlib.pyplot as plt
+# Constants
+STOP_WORDS = [""a"", ""an"", ""the"", ""in"", ""on"", ""at"", ""and"", ""or""]
+def task_func(file_path, save_path=None):
+
+    pass
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+import matplotlib.pyplot as plt
+STOP_WORDS = [""a"", ""an"", ""the"", ""in"", ""on"", ""at"", ""and"", ""or""]
+def task_func(file_path, save_path=None):
+    # Read data from CSV file
+    data = pd.read_csv(file_path)
+    
+    # Check if data is empty
+    if data.empty:
+        print(""Input data is empty."")
+        return None
+    
+    # Combine text data into a single string
+    text_data = ' '.join(data['text'].astype(str))
+    
+    # Perform text vectorization
+    vectorizer = CountVectorizer(stop_words=STOP_WORDS)
+    X = vectorizer.fit_transform([text_data])
+    
+    # Check if all words are stopwords
+    if len(vectorizer.get_feature_names()) == 0:
+        print(""Input data contains only stopwords."")
+        return None
+    
+    # Get word counts
+    word_counts = X.toarray()[0]
+    words = vectorizer.get_feature_names_out()
+    
+    # Create a dictionary of word counts
+    word_count_dict = dict(zip(words, word_counts))
+    
+    # Sort the dictionary by values in descending order
+    sorted_word_count = dict(sorted(word_count_dict.items(), key=lambda x: x[1], reverse=True))
+    
+    # Get the top 10 most common words
+    top_words = list(sorted_word_count.items())[:10]
+    
+    # Create a histogram of the ten most common words
+    plt.figure(figsize=(10, 6))
+    plt.bar([word[0] for word in top_words], [word[1] for word in top_words])
+    plt.xlabel('Words')
+    plt.ylabel('Frequency')
+    plt.title('Top 10 Most Common Words')
+    
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+        return None
+    else:
+        plt.show()
+        return plt.gca()",error,test_multiple_lines_csv,"    def test_multiple_lines_csv(self, mock_read_csv):
+        """"""
+        Test with a CSV file containing multiple lines of text. Checks for correct handling of multiline data.
+        """"""
+        mock_read_csv.return_value = pd.DataFrame({""Text"": [""test1"", ""test2""]})
+        ax = task_func(""dummy_path.csv"")
+        self.assertEqual(
+            len(ax.patches),
+            2,
+            ""There should be two bars in the histogram for two different words"",
+        )","{'stat': 'error', 'exception_type': ""KeyError: 'text'"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 110, 'funcname': 'test_multiple_lines_csv', 'codeline': '        ax = task_func(""dummy_path.csv"")'}, {'filename': '__test__.py', 'lineno': 23, 'funcname': 'task_func', 'codeline': ""    text_data = ' '.join(data['text'].astype(str))""}], 'traceback_str': 'Traceback (most recent call last):\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/indexes/base.py"", line 3653, in get_loc\n    return self._engine.get_loc(casted_key)\n  File ""pandas/_libs/index.pyx"", line 147, in pandas._libs.index.IndexEngine.get_loc\n  File ""pandas/_libs/index.pyx"", line 176, in pandas._libs.index.IndexEngine.get_loc\n  File ""pandas/_libs/hashtable_class_helper.pxi"", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item\n  File ""pandas/_libs/hashtable_class_helper.pxi"", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item\nKeyError: \'text\'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File ""/home/mambaforge/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 110, in test_multiple_lines_csv\n  File ""__test__.py"", line 23, in task_func\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/frame.py"", line 3761, in __getitem__\n    indexer = self.columns.get_loc(key)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/indexes/base.py"", line 3655, in get_loc\n    raise KeyError(key) from err\nKeyError: \'text\'\n'}",1/5,/data/wyk/autosd/arhe/bigcodebench5.new/1052/solution_v0_s0_o0.py
+"This function processes a text dataset from a CSV file, performs text vectorization while excluding specific stopwords, and creates a histogram of the ten most common words. The function is robust to different input scenarios, such as empty data or data containing only stopwords.
+The function should output with:
+    matplotlib Axes object: If save_path is not provided and valid words are found in the input, the function
+    displays the histogram plot and returns the matplotlib Axes object.
+    None: In two scenarios:
+    1. If save_path is provided, saves the plot to the specified location and returns None.
+    2. If the input file is empty or contains only stop words, prints a message and returns None.
+You should write self-contained code starting with:
+```
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+import matplotlib.pyplot as plt
+# Constants
+STOP_WORDS = [""a"", ""an"", ""the"", ""in"", ""on"", ""at"", ""and"", ""or""]
+def task_func(file_path, save_path=None):
+```",10,1,"
+def task_func(file_path, save_path=None):
+    # Read data from CSV file
+    data = pd.read_csv(file_path)
+    
+    # Check if data is empty
+    if data.empty:
+        print(""Input data is empty."")
+        return None
+    
+    # Combine text data into a single string
+    text_data = ' '.join(data['Text'].astype(str))
+    
+    # Perform text vectorization
+    vectorizer = CountVectorizer(stop_words=STOP_WORDS)
+    X = vectorizer.fit_transform([text_data])
+    
+    # Check if all words are stopwords
+    if len(vectorizer.get_feature_names_out()) == 0:
+        print(""Input data contains only stopwords."")
+        return None
+    
+    # Get word counts
+    word_counts = X.toarray()[0]
+    words = vectorizer.get_feature_names_out()
+    
+    # Create a dictionary of word counts
+    word_count_dict = dict(zip(words, word_counts))
+    
+    # Sort the dictionary by values in descending order
+    sorted_word_count = dict(sorted(word_count_dict.items(), key=lambda x: x[1], reverse=True))
+    
+    # Get the top 10 most common words
+    top_words = list(sorted_word_count.items())[:10]
+    
+    # Create a histogram of the ten most common words
+    plt.figure(figsize=(10, 6))
+    plt.bar([word[0] for word in top_words], [word[1] for word in top_words])
+    plt.xlabel('Words')
+    plt.ylabel('Frequency')
+    plt.title('Top 10 Most Common Words')
+    
+    if save_path:
+        plt.savefig(save_path)
+        plt.close()
+        return None
+    else:
+        plt.show()
+        return plt.gca()
+",error,test_empty_csv,"    def test_empty_csv(self, mock_read_csv):
+        """"""
+        Test with an empty CSV file. Checks if the function handles empty data gracefully.
+        """"""
+        mock_read_csv.return_value = pd.DataFrame(columns=[""Text""])
+        result = task_func(""dummy_path.csv"")
+        self.assertIsNone(result, ""The function should return None for empty data"")","{'stat': 'error', 'exception_type': ""NameError: name 'pd' is not defined"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 61, 'funcname': 'test_empty_csv', 'codeline': '        mock_read_csv.return_value = pd.DataFrame(columns=[""Text""])'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""/data/wyk/.conda/envs/bigcodebench/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 61, in test_empty_csv\nNameError: name \'pd\' is not defined\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5.new/1052/solution_v1_s10_o0.py

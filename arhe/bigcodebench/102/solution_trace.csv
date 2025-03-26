@@ -1,0 +1,71 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Draws a seaborn pairplot for the diabetes dataset obtained from sklearn.datasets. This function sets the font to Arial. It then loads the diabetes dataset into a DataFrame and creates a pairplot using seaborn, which is useful for visual exploration of relationships between different features in the dataset.
+The function should output with:
+    matplotlib.figure.Figure: A matplotlib Figure instance representing the created pairplot.
+    pd.DataFrame: a DataFrame representation of the diabetes dataset
+You should write self-contained code starting with:
+```
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from sklearn.datasets import load_diabetes
+def task_func():
+```",0,0,"import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from sklearn.datasets import load_diabetes
+def task_func():
+
+    pass
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from sklearn.datasets import load_diabetes
+def task_func():
+    # Set font to Arial
+    plt.rcParams['font.sans-serif'] = 'Arial'
+
+    # Load diabetes dataset
+    diabetes_data = load_diabetes()
+    df = pd.DataFrame(data=diabetes_data.data, columns=diabetes_data.feature_names)
+
+    # Create pairplot using seaborn
+    pairplot = sns.pairplot(df)
+
+    return pairplot.fig, df",fail,test_font_setting,"    def test_font_setting(self):
+        """"""Test if the font setting is correctly applied to the figure.""""""
+        task_func()
+        # Checking matplotlib's default font settings
+        current_font = plt.rcParams['font.family']
+        self.assertIn('Arial', current_font)","{'stat': 'fail', 'exception_type': ""AssertionError: 'Arial' not found in ['sans-serif']"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 50, 'funcname': 'test_font_setting', 'codeline': ""        self.assertIn('Arial', current_font)""}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 50, in test_font_setting\nAssertionError: \'Arial\' not found in [\'sans-serif\']\n'}",4/5,/data/wyk/autosd/arhe/bigcodebench5/102/solution_v0_s0_o0.py
+"Draws a seaborn pairplot for the diabetes dataset obtained from sklearn.datasets. This function sets the font to Arial. It then loads the diabetes dataset into a DataFrame and creates a pairplot using seaborn, which is useful for visual exploration of relationships between different features in the dataset.
+The function should output with:
+    matplotlib.figure.Figure: A matplotlib Figure instance representing the created pairplot.
+    pd.DataFrame: a DataFrame representation of the diabetes dataset
+You should write self-contained code starting with:
+```
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from sklearn.datasets import load_diabetes
+def task_func():
+```",10,1,"
+def task_func():
+    # Set font to Arial
+    plt.rcParams['font.sans-serif'] = ['Arial']
+    plt.rcParams['font.family'] = 'sans-serif'
+
+    # Load diabetes dataset
+    diabetes_data = load_diabetes()
+    df = pd.DataFrame(data=diabetes_data.data, columns=diabetes_data.feature_names)
+
+    # Create pairplot using seaborn
+    pairplot = sns.pairplot(df)
+
+    return pairplot.fig, df
+",fail,test_font_setting,"    def test_font_setting(self):
+        """"""Test if the font setting is correctly applied to the figure.""""""
+        task_func()
+        # Checking matplotlib's default font settings
+        current_font = plt.rcParams['font.family']
+        self.assertIn('Arial', current_font)","{'stat': 'fail', 'exception_type': ""AssertionError: 'Arial' not found in ['sans-serif']"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 42, 'funcname': 'test_font_setting', 'codeline': ""        self.assertIn('Arial', current_font)""}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 42, in test_font_setting\nAssertionError: \'Arial\' not found in [\'sans-serif\']\n'}",4/5,/data/wyk/autosd/arhe/bigcodebench5/102/solution_v1_s10_o0.py

@@ -1,0 +1,140 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Processes a dictionary of numerical data to create a pandas DataFrame, removes None values, and generates a histogram of the data values using seaborn. The histogram's bins are dynamically calculated based on the range of the data. Specifically, the number of bins is set to the minimum of 11 and half the number of data points, with a minimum of 2 bins. If the DataFrame is empty or the data lacks variability (all values are the same after removing None values), the function does not generate a plot.
+Note that: Calculates the minimum and maximum values in the DataFrame. Dynamically sets the number of bins for the histogram based on the number of data points, with a minimum of 2 and a maximum of 11 bins. Create evenly spaced bin edges between the minimum and maximum values. KDE (Kernel Density Estimate) is turned off. Sets the plot title to the predefined constant `PLOT_TITLE`.
+The function should output with:
+    DataFrame: A pandas DataFrame created from the input dictionary, excluding None values.
+    Axes or None: A seaborn histogram plot object if the DataFrame contains variable data;
+    None if the DataFrame is empty or if all values are identical.
+You should write self-contained code starting with:
+```
+import numpy as np
+import pandas as pd
+import seaborn as sns
+# Constants
+PLOT_TITLE = ""Value Distribution""
+def task_func(data_dict):
+```",0,0,"import numpy as np
+import pandas as pd
+import seaborn as sns
+# Constants
+PLOT_TITLE = ""Value Distribution""
+def task_func(data_dict):
+
+    pass
+import numpy as np
+import pandas as pd
+import seaborn as sns
+PLOT_TITLE = ""Value Distribution""
+def task_func(data_dict):
+    # Create DataFrame from dictionary
+    df = pd.DataFrame(data_dict.items(), columns=['Key', 'Value'])
+    
+    # Remove None values
+    df = df.dropna()
+    
+    if df.empty or df['Value'].nunique() == 1:
+        return df, None
+    
+    # Calculate min and max values
+    min_val = df['Value'].min()
+    max_val = df['Value'].max()
+    
+    # Calculate number of bins
+    num_bins = min(max(2, len(df) // 2), 11)
+    
+    # Generate histogram
+    plot = sns.histplot(df['Value'], bins=num_bins, kde=False)
+    plot.set_title(PLOT_TITLE)
+    
+    return df, plot",error,test_empty_dictionary,"    def test_empty_dictionary(self):
+        """"""
+        Test if the function correctly handles an empty dictionary, returning an empty DataFrame and no plot.
+        """"""
+        data = {}
+        df, plot = task_func(data)
+        self.assertEqual(df.shape, (0, 0))
+        self.assertIsNone(plot)","{'stat': 'fail', 'exception_type': 'AssertionError: Tuples differ: (0, 2) != (0, 0)\n\nFirst differing element 1:\n2\n0\n\n- (0, 2)\n?     ^\n\n+ (0, 0)\n?     ^\n', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 61, 'funcname': 'test_empty_dictionary', 'codeline': '        self.assertEqual(df.shape, (0, 0))'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 61, in test_empty_dictionary\nAssertionError: Tuples differ: (0, 2) != (0, 0)\n\nFirst differing element 1:\n2\n0\n\n- (0, 2)\n?     ^\n\n+ (0, 0)\n?     ^\n\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5/1024/solution_v0_s0_o0.py
+"Processes a dictionary of numerical data to create a pandas DataFrame, removes None values, and generates a histogram of the data values using seaborn. The histogram's bins are dynamically calculated based on the range of the data. Specifically, the number of bins is set to the minimum of 11 and half the number of data points, with a minimum of 2 bins. If the DataFrame is empty or the data lacks variability (all values are the same after removing None values), the function does not generate a plot.
+Note that: Calculates the minimum and maximum values in the DataFrame. Dynamically sets the number of bins for the histogram based on the number of data points, with a minimum of 2 and a maximum of 11 bins. Create evenly spaced bin edges between the minimum and maximum values. KDE (Kernel Density Estimate) is turned off. Sets the plot title to the predefined constant `PLOT_TITLE`.
+The function should output with:
+    DataFrame: A pandas DataFrame created from the input dictionary, excluding None values.
+    Axes or None: A seaborn histogram plot object if the DataFrame contains variable data;
+    None if the DataFrame is empty or if all values are identical.
+You should write self-contained code starting with:
+```
+import numpy as np
+import pandas as pd
+import seaborn as sns
+# Constants
+PLOT_TITLE = ""Value Distribution""
+def task_func(data_dict):
+```",4,1,"
+def task_func(data_dict):
+    # Create DataFrame from dictionary
+    df = pd.DataFrame(data_dict.items(), columns=['Key', 'Value'])
+    
+    # Remove None values
+    df = df.dropna()
+    
+    if df.empty or df['Value'].nunique() == 1:
+        return df, None
+    
+    # Calculate min and max values
+    min_val = df['Value'].min()
+    max_val = df['Value'].max()
+    
+    # Calculate number of bins
+    num_bins = min(max(2, len(df) // 2), 11)
+    
+    # Generate histogram
+    plot = sns.histplot(df['Value'], bins=num_bins, kde=False)
+    plot.set_title(PLOT_TITLE)
+    
+    return df, plot
+",error,test_empty_dictionary,"    def test_empty_dictionary(self):
+        """"""
+        Test if the function correctly handles an empty dictionary, returning an empty DataFrame and no plot.
+        """"""
+        data = {}
+        df, plot = task_func(data)
+        self.assertEqual(df.shape, (0, 0))
+        self.assertIsNone(plot)","{'stat': 'fail', 'exception_type': 'AssertionError: Tuples differ: (0, 2) != (0, 0)\n\nFirst differing element 1:\n2\n0\n\n- (0, 2)\n?     ^\n\n+ (0, 0)\n?     ^\n', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 51, 'funcname': 'test_empty_dictionary', 'codeline': '        self.assertEqual(df.shape, (0, 0))'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 51, in test_empty_dictionary\nAssertionError: Tuples differ: (0, 2) != (0, 0)\n\nFirst differing element 1:\n2\n0\n\n- (0, 2)\n?     ^\n\n+ (0, 0)\n?     ^\n\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5/1024/solution_v1_s4_o0.py
+"Processes a dictionary of numerical data to create a pandas DataFrame, removes None values, and generates a histogram of the data values using seaborn. The histogram's bins are dynamically calculated based on the range of the data. Specifically, the number of bins is set to the minimum of 11 and half the number of data points, with a minimum of 2 bins. If the DataFrame is empty or the data lacks variability (all values are the same after removing None values), the function does not generate a plot.
+Note that: Calculates the minimum and maximum values in the DataFrame. Dynamically sets the number of bins for the histogram based on the number of data points, with a minimum of 2 and a maximum of 11 bins. Create evenly spaced bin edges between the minimum and maximum values. KDE (Kernel Density Estimate) is turned off. Sets the plot title to the predefined constant `PLOT_TITLE`.
+The function should output with:
+    DataFrame: A pandas DataFrame created from the input dictionary, excluding None values.
+    Axes or None: A seaborn histogram plot object if the DataFrame contains variable data;
+    None if the DataFrame is empty or if all values are identical.
+You should write self-contained code starting with:
+```
+import numpy as np
+import pandas as pd
+import seaborn as sns
+# Constants
+PLOT_TITLE = ""Value Distribution""
+def task_func(data_dict):
+```",10,2,"
+def task_func(data_dict):
+    df = pd.DataFrame(data_dict.items(), columns=['Key', 'Value'])
+    df = df.dropna()
+    
+    if df.empty or df['Value'].nunique() == 1:
+        return pd.DataFrame(columns=['Key', 'Value']), None
+    
+    min_val = df['Value'].min()
+    max_val = df['Value'].max()
+    
+    num_bins = min(max(2, len(df) // 2), 11)
+    
+    plot = sns.histplot(df['Value'], bins=num_bins, kde=False)
+    plot.set_title(PLOT_TITLE)
+    
+    return df, plot
+",error,test_empty_dictionary,"    def test_empty_dictionary(self):
+        """"""
+        Test if the function correctly handles an empty dictionary, returning an empty DataFrame and no plot.
+        """"""
+        data = {}
+        df, plot = task_func(data)
+        self.assertEqual(df.shape, (0, 0))
+        self.assertIsNone(plot)","{'stat': 'fail', 'exception_type': 'AssertionError: Tuples differ: (0, 2) != (0, 0)\n\nFirst differing element 1:\n2\n0\n\n- (0, 2)\n?     ^\n\n+ (0, 0)\n?     ^\n', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 45, 'funcname': 'test_empty_dictionary', 'codeline': '        self.assertEqual(df.shape, (0, 0))'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 45, in test_empty_dictionary\nAssertionError: Tuples differ: (0, 2) != (0, 0)\n\nFirst differing element 1:\n2\n0\n\n- (0, 2)\n?     ^\n\n+ (0, 0)\n?     ^\n\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5/1024/solution_v2_s10_o0.py

@@ -1,0 +1,86 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Draw the correlation heatmap of the Boston Housing dataset using Seaborn, with an option to save it to a specified file.
+The function should raise the exception for: ValueError: If an error occurs in generating or saving the plot.
+The function should output with:
+    matplotlib.axes.Axes: The Axes object containing the heatmap plot.
+You should write self-contained code starting with:
+```
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import numpy as np
+def task_func(data_url=""http://lib.stat.cmu.edu/datasets/boston"", seed=42):
+```",0,0,"import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import numpy as np
+def task_func(data_url=""http://lib.stat.cmu.edu/datasets/boston"", seed=42):
+
+    pass
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import numpy as np
+def task_func(data_url=""http://lib.stat.cmu.edu/datasets/boston"", seed=42):
+    try:
+        # Load the Boston Housing dataset
+        boston_data = pd.read_csv(data_url, sep='\s+', skiprows=22, header=None)
+        
+        # Set column names
+        column_names = ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
+        boston_data.columns = column_names
+        
+        # Generate correlation matrix
+        corr_matrix = boston_data.corr()
+        
+        # Create the heatmap plot
+        plt.figure(figsize=(12, 10))
+        heatmap = sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt="".2f"")
+        
+        # Save the plot to a file
+        plt.savefig('correlation_heatmap.png')
+        
+        return heatmap.get_figure().gca()
+    
+    except Exception as e:
+        raise ValueError(""An error occurred in generating or saving the plot."") from e",error,test_basic_functionality,"    def test_basic_functionality(self):
+        ax = task_func()
+        self.assertIsInstance(ax, plt.Axes)","{'stat': 'error', 'exception_type': 'ValueError: An error occurred in generating or saving the plot.', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 39, 'funcname': 'test_basic_functionality', 'codeline': '        ax = task_func()'}, {'filename': '__test__.py', 'lineno': 34, 'funcname': 'task_func', 'codeline': '        raise ValueError(""An error occurred in generating or saving the plot."") from e'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 19, in task_func\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/generic.py"", line 6002, in __setattr__\n    return object.__setattr__(self, name, value)\n  File ""pandas/_libs/properties.pyx"", line 69, in pandas._libs.properties.AxisProperty.__set__\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/generic.py"", line 730, in _set_axis\n    self._mgr.set_axis(axis, labels)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/internals/managers.py"", line 225, in set_axis\n    self._validate_set_axis(axis, new_labels)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/internals/base.py"", line 70, in _validate_set_axis\n    raise ValueError(\nValueError: Length mismatch: Expected axis has 11 elements, new values have 14 elements\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File ""__test__.py"", line 39, in test_basic_functionality\n  File ""__test__.py"", line 34, in task_func\nValueError: An error occurred in generating or saving the plot.\n'}",0/4,/data/wyk/autosd/arhe/bigcodebench5/101/solution_v0_s0_o0.py
+"Draw the correlation heatmap of the Boston Housing dataset using Seaborn, with an option to save it to a specified file.
+The function should raise the exception for: ValueError: If an error occurs in generating or saving the plot.
+The function should output with:
+    matplotlib.axes.Axes: The Axes object containing the heatmap plot.
+You should write self-contained code starting with:
+```
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import numpy as np
+def task_func(data_url=""http://lib.stat.cmu.edu/datasets/boston"", seed=42):
+```",10,1,"
+def task_func(data_url=""http://lib.stat.cmu.edu/datasets/boston"", seed=42):
+    try:
+        # Load the Boston Housing dataset
+        boston_data = pd.read_csv(data_url, sep='\s+', skiprows=22, header=None)
+        
+        # Set column names
+        column_names = ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSTAT', 'MEDV']
+        boston_data.columns = column_names
+        
+        # Generate correlation matrix
+        corr_matrix = boston_data.corr()
+        
+        # Create the heatmap plot
+        plt.figure(figsize=(12, 10))
+        heatmap = sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt="".2f"")
+        
+        # Save the plot to a file
+        plt.savefig('correlation_heatmap.png')
+        
+        return heatmap.get_figure().gca()
+    
+    except Exception as e:
+        raise ValueError(""An error occurred in generating or saving the plot."") from e
+",error,test_basic_functionality,"    def test_basic_functionality(self):
+        ax = task_func()
+        self.assertIsInstance(ax, plt.Axes)","{'stat': 'error', 'exception_type': 'ValueError: An error occurred in generating or saving the plot.', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 30, 'funcname': 'test_basic_functionality', 'codeline': '        ax = task_func()'}, {'filename': '__test__.py', 'lineno': 24, 'funcname': 'task_func', 'codeline': '        raise ValueError(""An error occurred in generating or saving the plot."") from e'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 5, in task_func\nNameError: name \'pd\' is not defined\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File ""__test__.py"", line 30, in test_basic_functionality\n  File ""__test__.py"", line 24, in task_func\nValueError: An error occurred in generating or saving the plot.\n'}",0/4,/data/wyk/autosd/arhe/bigcodebench5/101/solution_v1_s10_o0.py

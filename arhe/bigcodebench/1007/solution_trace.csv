@@ -1,0 +1,71 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"This function fetches JSON data from a specified URL and converts it into a Pandas DataFrame. It expects the JSON to be in a format that is directly convertible to a DataFrame, typically a list of dictionaries. The function handles various scenarios including successful data retrieval and conversion, network issues, and invalid JSON format.
+Note that: Notes: The function uses a timeout of 5 seconds for the network request to avoid hanging indefinitely. It checks the HTTP response status and raises an HTTPError for unsuccessful status codes. Directly converts the HTTP response to JSON and then to a DataFrame, without intermediate processing.
+The function should raise the exception for: SystemError: If there is a network-related issue such as a connection error, timeout, or if the server responded with an unsuccessful status code (like 404 or 500). This is a re-raised exception from requests.RequestException to provide a more specific error message. ValueError: If the fetched data is not in a valid JSON format that can be converted into a DataFrame. This could occur if the data structure does not match the expected format (e.g., not a list of dictionaries).
+The function should output with:
+    pd.DataFrame: A DataFrame constructed from the JSON data fetched from the URL.
+You should write self-contained code starting with:
+```
+import requests
+import pandas as pd
+def task_func(url: str) -> pd.DataFrame:
+```",0,0,"import requests
+import pandas as pd
+def task_func(url: str) -> pd.DataFrame:
+
+    pass
+import requests
+import pandas as pd
+def task_func(url: str) -> pd.DataFrame:
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()  # Raise HTTPError for unsuccessful status codes
+        json_data = response.json()
+        if not isinstance(json_data, list) or not all(isinstance(item, dict) for item in json_data):
+            raise ValueError(""Fetched data is not in a valid JSON format that can be converted into a DataFrame."")
+        df = pd.DataFrame(json_data)
+        return df
+    except requests.RequestException as e:
+        raise SystemError(f""Network-related issue: {e}"")
+    except ValueError as e:
+        raise ValueError(f""Invalid JSON format: {e}"")
+url = ""https://jsonplaceholder.typicode.com/posts""",error,test_null_json,"    def test_null_json(self, mock_get):
+        """"""Test a JSON that is null.""""""
+        mock_get.return_value.json.return_value = None
+        mock_get.return_value.status_code = 200
+        df = task_func(""https://example.com/null.json"")
+        self.assertTrue(isinstance(df, pd.DataFrame))
+        self.assertEqual(len(df), 0)","{'stat': 'error', 'exception_type': 'ValueError: Invalid JSON format: Fetched data is not in a valid JSON format that can be converted into a DataFrame.', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 65, 'funcname': 'test_null_json', 'codeline': '        df = task_func(""https://example.com/null.json"")'}, {'filename': '__test__.py', 'lineno': 20, 'funcname': 'task_func', 'codeline': '        raise ValueError(f""Invalid JSON format: {e}"")'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 14, in task_func\nValueError: Fetched data is not in a valid JSON format that can be converted into a DataFrame.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File ""/home/mambaforge/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 65, in test_null_json\n  File ""__test__.py"", line 20, in task_func\nValueError: Invalid JSON format: Fetched data is not in a valid JSON format that can be converted into a DataFrame.\n'}",5/6,/data/wyk/autosd/arhe/bigcodebench5/1007/solution_v0_s0_o0.py
+"This function fetches JSON data from a specified URL and converts it into a Pandas DataFrame. It expects the JSON to be in a format that is directly convertible to a DataFrame, typically a list of dictionaries. The function handles various scenarios including successful data retrieval and conversion, network issues, and invalid JSON format.
+Note that: Notes: The function uses a timeout of 5 seconds for the network request to avoid hanging indefinitely. It checks the HTTP response status and raises an HTTPError for unsuccessful status codes. Directly converts the HTTP response to JSON and then to a DataFrame, without intermediate processing.
+The function should raise the exception for: SystemError: If there is a network-related issue such as a connection error, timeout, or if the server responded with an unsuccessful status code (like 404 or 500). This is a re-raised exception from requests.RequestException to provide a more specific error message. ValueError: If the fetched data is not in a valid JSON format that can be converted into a DataFrame. This could occur if the data structure does not match the expected format (e.g., not a list of dictionaries).
+The function should output with:
+    pd.DataFrame: A DataFrame constructed from the JSON data fetched from the URL.
+You should write self-contained code starting with:
+```
+import requests
+import pandas as pd
+def task_func(url: str) -> pd.DataFrame:
+```",10,1,"
+def task_func(url: str) -> pd.DataFrame:
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()  # Raise HTTPError for unsuccessful status codes
+        json_data = response.json()
+        if json_data is None:
+            return pd.DataFrame()
+        if not isinstance(json_data, list) or not all(isinstance(item, dict) for item in json_data):
+            raise ValueError(""Fetched data is not in a valid JSON format that can be converted into a DataFrame."")
+        df = pd.DataFrame(json_data)
+        return df
+    except requests.RequestException as e:
+        raise SystemError(f""Network-related issue: {e}"")
+    except ValueError as e:
+        raise ValueError(f""Invalid JSON format: {e}"")
+",sys_error,test_null_json,"    def test_null_json(self, mock_get):
+        """"""Test a JSON that is null.""""""
+        mock_get.return_value.json.return_value = None
+        mock_get.return_value.status_code = 200
+        df = task_func(""https://example.com/null.json"")
+        self.assertTrue(isinstance(df, pd.DataFrame))
+        self.assertEqual(len(df), 0)","{'stat': 'sys_error', 'exception_type': 'NameError(""name \'pd\' is not defined"")\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 2, in <module>\nNameError: name \'pd\' is not defined\n', 'stdout_logs': '', 'traceback_frame': [], 'traceback_str': 'NameError(""name \'pd\' is not defined"")\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 2, in <module>\nNameError: name \'pd\' is not defined\n'}",0/6,/data/wyk/autosd/arhe/bigcodebench5/1007/solution_v1_s10_o0.py

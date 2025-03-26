@@ -1,0 +1,58 @@
+2025-03-25 14:56:39  INFO     [main.py -> update_solution_logs]: Focused test method changed from None to test_csv_with_non_numeric_data. Pass Rate changed from None to 1/5
+2025-03-25 14:56:39  INFO     [main.py -> get_solutions]: 
+==================================================
+Start Debugging on Task BigCodeBench/1054
+==================================================
+2025-03-25 14:56:40  INFO     [main.py -> get_solutions]: 
+--------------------------------------------------
+Start Debugging on Task BigCodeBench/1054 Solution 0@Step0:
+import csv
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+def task_func(file_path):
+
+    pass
+import csv
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+def task_func(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            data = [float(row[0]) for row in csv.reader(file)]
+        
+        sample = np.random.choice(data, 30, replace=False)
+        sample_mean = np.mean(sample)
+        sample_std = np.std(sample, ddof=1)
+        
+        plt.hist(sample, bins='auto', density=True, alpha=0.6, color='b')
+        
+        xmin, xmax = plt.xlim()
+        x = np.linspace(xmin, xmax, 100)
+        p = stats.norm.pdf(x, sample_mean, sample_std)
+        plt.plot(x, p, 'k', linewidth=2)
+        
+        return sample_mean, sample_std, plt.gca()
+    
+    except FileNotFoundError:
+        print("File not found.")
+    except Exception as e:
+        print("An error occurred:", e)
+Status: fail
+Details: {'test_csv_with_non_numeric_data': {'stat': 'fail', 'exception_type': 'AssertionError: ValueError not raised', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 63, 'funcname': 'test_csv_with_non_numeric_data', 'codeline': '        with patch("builtins.open", mock_open(read_data=mock_data)), self.assertRaises('}], 'traceback_str': 'Traceback (most recent call last):\n  File "__test__.py", line 63, in test_csv_with_non_numeric_data\nAssertionError: ValueError not raised\n'}, 'test_empty_csv_file': {'stat': 'fail', 'exception_type': 'AssertionError: ValueError not raised', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 52, 'funcname': 'test_empty_csv_file', 'codeline': '        with patch("builtins.open", mock_open(read_data=mock_data)), self.assertRaises('}], 'traceback_str': 'Traceback (most recent call last):\n  File "__test__.py", line 52, in test_empty_csv_file\nAssertionError: ValueError not raised\n'}, 'test_non_existent_file': {'stat': 'fail', 'exception_type': 'AssertionError: OSError not raised', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 58, 'funcname': 'test_non_existent_file', 'codeline': '        with self.assertRaises(IOError):'}], 'traceback_str': 'Traceback (most recent call last):\n  File "__test__.py", line 58, in test_non_existent_file\nAssertionError: OSError not raised\n'}, 'test_small_population_size': {'stat': 'fail', 'exception_type': 'AssertionError: ValueError not raised', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 70, 'funcname': 'test_small_population_size', 'codeline': '        with patch("builtins.open", mock_open(read_data=mock_data)), self.assertRaises('}], 'traceback_str': 'Traceback (most recent call last):\n  File "__test__.py", line 70, in test_small_population_size\nAssertionError: ValueError not raised\n'}}
+--------------------------------------------------
+2025-03-25 15:00:18  ERROR    [main.py -> get_solutions]: Error on task BigCodeBench/1054 solution 0 at step 10: 
+traceback: Traceback (most recent call last):
+  File "/data/wyk/autosd/arhe/main.py", line 609, in get_solutions
+    prompt_builder.take_steps(n_steps=task_left_steps)
+  File "/data/wyk/autosd/arhe/main.py", line 343, in take_steps
+    self.final_step()
+  File "/data/wyk/autosd/arhe/main.py", line 290, in final_step
+    self._prompt = self._redact_failures()
+  File "/data/wyk/autosd/arhe/main.py", line 349, in _redact_failures
+    assert self._prompt.count(split_token) == 1
+AssertionError
+
+2025-03-25 15:00:18  INFO     [main.py -> get_solutions]: ==================================================Task BigCodeBench/1054 Total comuptation consumption:
+input tokens=0, output tokens=0, model calls=0

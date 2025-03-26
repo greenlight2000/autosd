@@ -1,0 +1,65 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Parses XML content from a string and converts it into a CSV format.
+Note that: Ensure that the XML content passed to the function is well-formed. The output CSV path should be a valid file path where the user has write permissions, to prevent IOError.
+The function should raise the exception for: ET.ParseError: This exception is raised if the input XML content is malformed or cannot be successfully parsed. The exception message includes details about the parsing error. IOError: Raised if there is an issue with writing to the specified CSV file path. This can happen due to reasons like invalid file path, full disk space, lack of write permissions, etc. The exception message provides details about the IO error.
+The function should output with:
+    None: The function does not return any value. Instead, it writes the output to
+    a CSV file at the specified path.
+You should write self-contained code starting with:
+```
+import xml.etree.ElementTree as ET
+import csv
+def task_func(xml_content, output_csv_path):
+```",0,0,"import xml.etree.ElementTree as ET
+import csv
+def task_func(xml_content, output_csv_path):
+
+    pass
+import xml.etree.ElementTree as ET
+import csv
+def task_func(xml_content, output_csv_path):
+    try:
+        root = ET.fromstring(xml_content)
+    except ET.ParseError as e:
+        raise ET.ParseError(f""Error parsing XML content: {str(e)}"")
+
+    try:
+        with open(output_csv_path, 'w', newline='') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            for child in root:
+                csvwriter.writerow([child.tag, child.text])
+    except IOError as e:
+        raise IOError(f""Error writing to CSV file: {str(e)}"")
+xml_content = ""<data><item>value1</item><item>value2</item></data>""
+output_csv_path = ""output.csv""",fail,test_empty_xml,"    def test_empty_xml(self):
+        """"""Test with an empty XML.""""""
+        xml_content = ""<root></root>""
+        csv_output = self.test_dir / ""output_scenario_2.csv""
+        task_func(xml_content, csv_output)
+        self.check_csv_content(xml_content, csv_output)","{'stat': 'fail', 'exception_type': ""AssertionError: Lists differ: [['root', '']] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n['root', '']\n\n- [['root', '']]\n+ []"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 64, 'funcname': 'test_empty_xml', 'codeline': '        self.check_csv_content(xml_content, csv_output)'}, {'filename': '__test__.py', 'lineno': 46, 'funcname': 'check_csv_content', 'codeline': '        self.assertEqual(expected_data, csv_data)'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 64, in test_empty_xml\n  File ""__test__.py"", line 46, in check_csv_content\nAssertionError: Lists differ: [[\'root\', \'\']] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n[\'root\', \'\']\n\n- [[\'root\', \'\']]\n+ []\n'}",2/7,/data/wyk/autosd/arhe/bigcodebench5/1009/solution_v0_s0_o0.py
+"Parses XML content from a string and converts it into a CSV format.
+Note that: Ensure that the XML content passed to the function is well-formed. The output CSV path should be a valid file path where the user has write permissions, to prevent IOError.
+The function should raise the exception for: ET.ParseError: This exception is raised if the input XML content is malformed or cannot be successfully parsed. The exception message includes details about the parsing error. IOError: Raised if there is an issue with writing to the specified CSV file path. This can happen due to reasons like invalid file path, full disk space, lack of write permissions, etc. The exception message provides details about the IO error.
+The function should output with:
+    None: The function does not return any value. Instead, it writes the output to
+    a CSV file at the specified path.
+You should write self-contained code starting with:
+```
+import xml.etree.ElementTree as ET
+import csv
+def task_func(xml_content, output_csv_path):
+```",10,1,"
+def task_func(xml_content, output_csv_path):
+    try:
+        root = ET.fromstring(xml_content)
+    except ET.ParseError as e:
+        raise ET.ParseError(f""Error parsing XML content: {str(e)}"")
+
+    try:
+        with open(output_csv_path, 'w', newline='') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            for child in root.iter():
+                csvwriter.writerow([child.tag, child.text if child.text is not None else """"])
+    except IOError as e:
+        raise IOError(f""Error writing to CSV file: {str(e)}"")
+",pass,,,,7/7,/data/wyk/autosd/arhe/bigcodebench5/1009/solution_v1_s10_o1.py

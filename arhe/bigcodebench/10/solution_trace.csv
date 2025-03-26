@@ -1,0 +1,88 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Convert elements in 'T1' to integers and create a list of random integers. The size of the list is the sum of the integers in `T1`. Calculate and return the mean, median, and mode of the list.
+The function should raise the exception for: statistics.StatisticsError if T1 is empty
+The function should output with:
+    tuple: A tuple containing the mean, median, and mode of the generated list of random integers.
+    The mean and median are floats, and the mode is an integer. The calculations use the generated
+    list whose size is determined by the sum of converted integers from `T1`.
+You should write self-contained code starting with:
+```
+import numpy as np
+import itertools
+import random
+import statistics
+def task_func(T1, RANGE=100):
+```",0,0,"import numpy as np
+import itertools
+import random
+import statistics
+def task_func(T1, RANGE=100):
+
+    pass
+import numpy as np
+import itertools
+import random
+import statistics
+def task_func(T1, RANGE=100):
+    if not T1:
+        raise statistics.StatisticsError(""T1 is empty"")
+
+    # Convert elements in T1 to integers
+    T1_int = [int(i) for i in T1]
+
+    # Create a list of random integers
+    random_list = [random.randint(0, RANGE) for _ in range(sum(T1_int))]
+
+    # Calculate mean, median, and mode
+    mean = np.mean(random_list)
+    median = np.median(random_list)
+    mode = statistics.mode(random_list)
+
+    return (mean, median, mode)",error,test_case_1,"    def test_case_1(self, mock_randint):
+        """"""Tests with small numbers and default range.""""""
+        T1 = (('1', '2'), ('2', '3'), ('3', '4'))
+        mean, median, mode = task_func(T1)
+        total_elements = sum(map(int, sum(T1, ())))
+        self.assertEqual(total_elements, 15)  # Check if the total_elements calculation is correct
+        self.assertTrue(isinstance(mean, float))
+        self.assertTrue(isinstance(median, float))
+        self.assertTrue(isinstance(mode, int))","{'stat': 'error', 'exception_type': ""TypeError: int() argument must be a string, a bytes-like object or a real number, not 'tuple'"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 37, 'funcname': 'test_case_1', 'codeline': '        mean, median, mode = task_func(T1)'}, {'filename': '__test__.py', 'lineno': 17, 'funcname': 'task_func', 'codeline': '    T1_int = [int(i) for i in T1]'}, {'filename': '__test__.py', 'lineno': 17, 'funcname': '<listcomp>', 'codeline': '    T1_int = [int(i) for i in T1]'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""/home/mambaforge/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 37, in test_case_1\n  File ""__test__.py"", line 17, in task_func\n  File ""__test__.py"", line 17, in <listcomp>\nTypeError: int() argument must be a string, a bytes-like object or a real number, not \'tuple\'\n'}",1/6,/data/wyk/autosd/arhe/bigcodebench5/10/solution_v0_s0_o0.py
+"Convert elements in 'T1' to integers and create a list of random integers. The size of the list is the sum of the integers in `T1`. Calculate and return the mean, median, and mode of the list.
+The function should raise the exception for: statistics.StatisticsError if T1 is empty
+The function should output with:
+    tuple: A tuple containing the mean, median, and mode of the generated list of random integers.
+    The mean and median are floats, and the mode is an integer. The calculations use the generated
+    list whose size is determined by the sum of converted integers from `T1`.
+You should write self-contained code starting with:
+```
+import numpy as np
+import itertools
+import random
+import statistics
+def task_func(T1, RANGE=100):
+```",3,1,"
+def task_func(T1, RANGE=100):
+    if not T1:
+        raise statistics.StatisticsError(""T1 is empty"")
+
+    # Flatten the nested tuple structure and convert elements to integers
+    T1_int = [int(i) for i in itertools.chain.from_iterable(T1)]
+
+    # Create a list of random integers
+    random_list = [random.randint(0, RANGE) for _ in range(sum(T1_int))]
+
+    # Calculate mean, median, and mode
+    mean = np.mean(random_list)
+    median = np.median(random_list)
+    mode = statistics.mode(random_list)
+
+    return (mean, median, mode)
+",error,test_case_1,"    def test_case_1(self, mock_randint):
+        """"""Tests with small numbers and default range.""""""
+        T1 = (('1', '2'), ('2', '3'), ('3', '4'))
+        mean, median, mode = task_func(T1)
+        total_elements = sum(map(int, sum(T1, ())))
+        self.assertEqual(total_elements, 15)  # Check if the total_elements calculation is correct
+        self.assertTrue(isinstance(mean, float))
+        self.assertTrue(isinstance(median, float))
+        self.assertTrue(isinstance(mode, int))","{'stat': 'error', 'exception_type': ""NameError: name 'itertools' is not defined"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 28, 'funcname': 'test_case_1', 'codeline': '        mean, median, mode = task_func(T1)'}, {'filename': '__test__.py', 'lineno': 7, 'funcname': 'task_func', 'codeline': '    T1_int = [int(i) for i in itertools.chain.from_iterable(T1)]'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""/data/wyk/.conda/envs/bigcodebench/lib/python3.10/unittest/mock.py"", line 1379, in patched\n    return func(*newargs, **newkeywargs)\n  File ""__test__.py"", line 28, in test_case_1\n  File ""__test__.py"", line 7, in task_func\nNameError: name \'itertools\' is not defined\n'}",1/6,/data/wyk/autosd/arhe/bigcodebench5/10/solution_v1_s3_o0.py

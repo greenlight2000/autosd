@@ -1,0 +1,109 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Scales the values in a given dictionary using MinMaxScaler and plots the scaled data.
+The function should output with:
+    pandas.DataFrame containing the scaled data.
+    matplotlib Axes object that displays the plot of the scaled data.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+# Constants
+PLOT_TITLE = ""Scaled Values""
+def task_func(data_dict):
+```",0,0,"import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+# Constants
+PLOT_TITLE = ""Scaled Values""
+def task_func(data_dict):
+
+    pass
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+PLOT_TITLE = ""Scaled Values""
+def task_func(data_dict):
+    # Convert dictionary to DataFrame
+    df = pd.DataFrame(data_dict)
+
+    # Initialize MinMaxScaler
+    scaler = MinMaxScaler()
+
+    # Fit and transform the data
+    scaled_data = scaler.fit_transform(df)
+
+    # Create a new DataFrame with scaled data
+    scaled_df = pd.DataFrame(scaled_data, columns=df.columns)
+
+    # Plot the scaled data
+    fig, ax = plt.subplots()
+    scaled_df.plot(ax=ax)
+    ax.set_title(PLOT_TITLE)
+    ax.set_xlabel(""Index"")
+    ax.set_ylabel(""Scaled Values"")
+    plt.show()
+
+    return scaled_df, ax
+data_dict = {
+    'A': [10, 20, 30, 40],
+    'B': [5, 15, 25, 35]
+}",error,test_all_none_data,"    def test_all_none_data(self):
+        """"""
+        Test with a dictionary where all values are None. Should return an empty DataFrame and a plot object.
+        """"""
+        data = {""a"": [None, None], ""b"": [None, None]}
+        result_df, result_ax = task_func(data)
+        self.assertTrue(result_df.empty)
+        self.assertIsNotNone(result_ax)","{'stat': 'fail', 'exception_type': 'AssertionError: False is not true', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 56, 'funcname': 'test_all_none_data', 'codeline': '        self.assertTrue(result_df.empty)'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 56, in test_all_none_data\nAssertionError: False is not true\n'}",2/5,/data/wyk/autosd/arhe/bigcodebench5/1025/solution_v0_s0_o0.py
+"Scales the values in a given dictionary using MinMaxScaler and plots the scaled data.
+The function should output with:
+    pandas.DataFrame containing the scaled data.
+    matplotlib Axes object that displays the plot of the scaled data.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+# Constants
+PLOT_TITLE = ""Scaled Values""
+def task_func(data_dict):
+```",10,1,"
+def task_func(data_dict):
+    # Convert dictionary to DataFrame
+    df = pd.DataFrame(data_dict)
+
+    # Drop rows with all NaN values to avoid scaling issues
+    df = df.dropna(how='all')
+
+    # If the DataFrame is empty after dropping NaN rows, return an empty DataFrame and a dummy plot
+    if df.empty:
+        fig, ax = plt.subplots()
+        return pd.DataFrame(), ax
+
+    # Initialize MinMaxScaler
+    scaler = MinMaxScaler()
+
+    # Fit and transform the data
+    scaled_data = scaler.fit_transform(df)
+
+    # Create a new DataFrame with scaled data
+    scaled_df = pd.DataFrame(scaled_data, columns=df.columns)
+
+    # Plot the scaled data
+    fig, ax = plt.subplots()
+    scaled_df.plot(ax=ax)
+    ax.set_title(PLOT_TITLE)
+    ax.set_xlabel(""Index"")
+    ax.set_ylabel(""Scaled Values"")
+    plt.show()
+
+    return scaled_df, ax
+",error,test_all_none_data,"    def test_all_none_data(self):
+        """"""
+        Test with a dictionary where all values are None. Should return an empty DataFrame and a plot object.
+        """"""
+        data = {""a"": [None, None], ""b"": [None, None]}
+        result_df, result_ax = task_func(data)
+        self.assertTrue(result_df.empty)
+        self.assertIsNotNone(result_ax)","{'stat': 'error', 'exception_type': ""NameError: name 'plt' is not defined"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 49, 'funcname': 'test_all_none_data', 'codeline': '        result_df, result_ax = task_func(data)'}, {'filename': '__test__.py', 'lineno': 11, 'funcname': 'task_func', 'codeline': '        fig, ax = plt.subplots()'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 49, in test_all_none_data\n  File ""__test__.py"", line 11, in task_func\nNameError: name \'plt\' is not defined\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5/1025/solution_v1_s10_o0.py

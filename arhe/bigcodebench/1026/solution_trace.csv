@@ -1,0 +1,150 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Performs a two-sample t-test on numerical data from two groups to determine if there is a significant difference in their means. The function handles NaN values, computes descriptive statistics for each group, and generates a boxplot and histograms for data visualization.
+Note that: The function sets the significance level (alpha) at 0.05. It removes NaN values before performing any calculations or plotting. A t-test is performed with the 'nan_policy' set to 'omit' to ignore NaNs. The function checks for sufficient non-NaN data points and adequate variance in each group before conducting the t-test. The boxplot and histograms provide a visual comparison of the data distributions.
+The function should raise the exception for: ValueError: If either group is empty, contains only NaN values, has less than two non-NaN values, or if the variance in one or both groups is below a threshold (1e-8).
+The function should output with:
+    dict: A dictionary containing:
+    'significant': Boolean. True if the means of the two groups are significantly different (p < 0.05).
+    'group1_stats': Dictionary with mean and standard deviation of 'group1' (excluding NaNs).
+    'group2_stats': Dictionary with mean and standard deviation of 'group2' (excluding NaNs).
+    'ax_boxplot': A matplotlib Axes object with a boxplot comparing 'group1' and 'group2'.
+    'ax_histogram': A matplotlib Axes object with histograms of 'group1' and 'group2'.
+You should write self-contained code starting with:
+```
+import numpy as np
+from scipy.stats import ttest_ind
+import matplotlib.pyplot as plt
+def task_func(kwargs):
+```",0,0,"import numpy as np
+from scipy.stats import ttest_ind
+import matplotlib.pyplot as plt
+def task_func(kwargs):
+
+    pass
+import numpy as np
+from scipy.stats import ttest_ind
+import matplotlib.pyplot as plt
+def task_func(kwargs):
+    alpha = 0.05
+    threshold_var = 1e-8
+
+    group1 = kwargs.get('group1')
+    group2 = kwargs.get('group2')
+
+    if len(group1) == 0 or len(group2) == 0:
+        raise ValueError(""Empty group detected."")
+
+    group1 = group1[~np.isnan(group1)]
+    group2 = group2[~np.isnan(group2)]
+
+    if len(group1) < 2 or len(group2) < 2:
+        raise ValueError(""Groups must have at least two non-NaN values."")
+
+    if np.var(group1) < threshold_var or np.var(group2) < threshold_var:
+        raise ValueError(""Variance in one or both groups is below threshold."")
+
+    group1_stats = {'mean': np.mean(group1), 'std': np.std(group1)}
+    group2_stats = {'mean': np.mean(group2), 'std': np.std(group2)}
+
+    fig, (ax_boxplot, ax_histogram) = plt.subplots(1, 2, figsize=(12, 6))
+
+    ax_boxplot.boxplot([group1, group2], labels=['Group 1', 'Group 2'])
+    ax_boxplot.set_title('Boxplot of Group 1 and Group 2')
+
+    ax_histogram.hist(group1, alpha=0.5, label='Group 1', color='blue', bins=20)
+    ax_histogram.hist(group2, alpha=0.5, label='Group 2', color='orange', bins=20)
+    ax_histogram.set_title('Histogram of Group 1 and Group 2')
+    ax_histogram.legend()
+
+    t_stat, p_val = ttest_ind(group1, group2, nan_policy='omit')
+
+    if p_val < alpha:
+        significant = True
+    else:
+        significant = False
+
+    output = {
+        'significant': significant,
+        'group1_stats': group1_stats,
+        'group2_stats': group2_stats,
+        'ax_boxplot': ax_boxplot,
+        'ax_histogram': ax_histogram
+    }
+
+    return output",error,test_all_nan_values,"    def test_all_nan_values(self):
+        """"""Test with groups containing only NaN values.""""""
+        data = {""group1"": [np.nan, np.nan], ""group2"": [np.nan, np.nan]}
+        with self.assertRaises(ValueError):
+            task_func(data)","{'stat': 'error', 'exception_type': 'TypeError: only integer scalar arrays can be converted to a scalar index', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 86, 'funcname': 'test_all_nan_values', 'codeline': '            task_func(data)'}, {'filename': '__test__.py', 'lineno': 20, 'funcname': 'task_func', 'codeline': '    group1 = group1[~np.isnan(group1)]'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 86, in test_all_nan_values\n  File ""__test__.py"", line 20, in task_func\nTypeError: only integer scalar arrays can be converted to a scalar index\n'}",1/7,/data/wyk/autosd/arhe/bigcodebench5/1026/solution_v0_s0_o0.py
+"Performs a two-sample t-test on numerical data from two groups to determine if there is a significant difference in their means. The function handles NaN values, computes descriptive statistics for each group, and generates a boxplot and histograms for data visualization.
+Note that: The function sets the significance level (alpha) at 0.05. It removes NaN values before performing any calculations or plotting. A t-test is performed with the 'nan_policy' set to 'omit' to ignore NaNs. The function checks for sufficient non-NaN data points and adequate variance in each group before conducting the t-test. The boxplot and histograms provide a visual comparison of the data distributions.
+The function should raise the exception for: ValueError: If either group is empty, contains only NaN values, has less than two non-NaN values, or if the variance in one or both groups is below a threshold (1e-8).
+The function should output with:
+    dict: A dictionary containing:
+    'significant': Boolean. True if the means of the two groups are significantly different (p < 0.05).
+    'group1_stats': Dictionary with mean and standard deviation of 'group1' (excluding NaNs).
+    'group2_stats': Dictionary with mean and standard deviation of 'group2' (excluding NaNs).
+    'ax_boxplot': A matplotlib Axes object with a boxplot comparing 'group1' and 'group2'.
+    'ax_histogram': A matplotlib Axes object with histograms of 'group1' and 'group2'.
+You should write self-contained code starting with:
+```
+import numpy as np
+from scipy.stats import ttest_ind
+import matplotlib.pyplot as plt
+def task_func(kwargs):
+```",10,1,"
+def task_func(kwargs):
+    import numpy as np  # Ensure NumPy is imported
+
+    alpha = 0.05
+    threshold_var = 1e-8
+
+    group1 = np.array(kwargs.get('group1'))  # Convert group1 to a NumPy array
+    group2 = np.array(kwargs.get('group2'))  # Convert group2 to a NumPy array
+
+    if len(group1) == 0 or len(group2) == 0:
+        raise ValueError(""Empty group detected."")
+
+    group1 = group1[~np.isnan(group1)]
+    group2 = group2[~np.isnan(group2)]
+
+    if len(group1) < 2 or len(group2) < 2:
+        raise ValueError(""Groups must have at least two non-NaN values."")
+
+    if np.var(group1) < threshold_var or np.var(group2) < threshold_var:
+        raise ValueError(""Variance in one or both groups is below threshold."")
+
+    group1_stats = {'mean': np.mean(group1), 'std': np.std(group1)}
+    group2_stats = {'mean': np.mean(group2), 'std': np.std(group2)}
+
+    fig, (ax_boxplot, ax_histogram) = plt.subplots(1, 2, figsize=(12, 6))
+
+    ax_boxplot.boxplot([group1, group2], labels=['Group 1', 'Group 2'])
+    ax_boxplot.set_title('Boxplot of Group 1 and Group 2')
+
+    ax_histogram.hist(group1, alpha=0.5, label='Group 1', color='blue', bins=20)
+    ax_histogram.hist(group2, alpha=0.5, label='Group 2', color='orange', bins=20)
+    ax_histogram.set_title('Histogram of Group 1 and Group 2')
+    ax_histogram.legend()
+
+    t_stat, p_val = ttest_ind(group1, group2, nan_policy='omit')
+
+    if p_val < alpha:
+        significant = True
+    else:
+        significant = False
+
+    output = {
+        'significant': significant,
+        'group1_stats': group1_stats,
+        'group2_stats': group2_stats,
+        'ax_boxplot': ax_boxplot,
+        'ax_histogram': ax_histogram
+    }
+
+    return output
+",error,test_different_means,"    def test_different_means(self):
+        """"""Test with groups having significantly different means.""""""
+        data = {""group1"": [1, 2, 3], ""group2"": [4, 5, 6]}
+        result = task_func(data)
+        self.assertTrue(result[""significant""])","{'stat': 'error', 'exception_type': ""NameError: name 'plt' is not defined"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 60, 'funcname': 'test_different_means', 'codeline': '        result = task_func(data)'}, {'filename': '__test__.py', 'lineno': 26, 'funcname': 'task_func', 'codeline': '    fig, (ax_boxplot, ax_histogram) = plt.subplots(1, 2, figsize=(12, 6))'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 60, in test_different_means\n  File ""__test__.py"", line 26, in task_func\nNameError: name \'plt\' is not defined\n'}",4/7,/data/wyk/autosd/arhe/bigcodebench5/1026/solution_v1_s10_o0.py

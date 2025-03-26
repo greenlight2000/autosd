@@ -1,0 +1,69 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Perform exploratory data analysis on a dataframe. This function converts the 'date' column to an ordinal format, creates a correlation matrix, and generates a pair plot of the dataframe. The title of the plot is 'Correlation Matrix'.
+The function should raise the exception for: ValueError: If the dataframe is empty, if required columns are missing, or if 'date' column is not in datetime format.
+The function should output with:
+    matplotlib.figure.Figure: The figure object for the correlation matrix heatmap.
+    seaborn.axisgrid.PairGrid: The PairGrid object for the pair plot.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+def task_func(df):
+```",0,0,"import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+def task_func(df):
+
+    pass
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+def task_func(df):
+    if df.empty or 'date' not in df.columns or not pd.api.types.is_datetime64_any_dtype(df['date']):
+        raise ValueError(""Invalid dataframe or missing 'date' column in datetime format"")
+
+    df['date'] = df['date'].apply(lambda x: x.toordinal())
+
+    corr_matrix = df.corr()
+    fig, ax = plt.subplots(figsize=(10, 8))
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', ax=ax)
+    ax.set_title('Correlation Matrix')
+
+    pair_plot = sns.pairplot(df)
+    
+    return fig, pair_plot",error,test_plot_titles,"    def test_plot_titles(self):
+        heatmap_fig, pairplot_grid = task_func(self.valid_df)
+        self.assertEqual(heatmap_fig.axes[0].get_title(), 'Correlation Matrix')","{'stat': 'error', 'exception_type': ""ValueError: could not convert string to float: 'A'"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 50, 'funcname': 'test_plot_titles', 'codeline': '        heatmap_fig, pairplot_grid = task_func(self.valid_df)'}, {'filename': '__test__.py', 'lineno': 16, 'funcname': 'task_func', 'codeline': '    corr_matrix = df.corr()'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 50, in test_plot_titles\n  File ""__test__.py"", line 16, in task_func\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/frame.py"", line 10054, in corr\n    mat = data.to_numpy(dtype=float, na_value=np.nan, copy=False)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/frame.py"", line 1838, in to_numpy\n    result = self._mgr.as_array(dtype=dtype, copy=copy, na_value=na_value)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/internals/managers.py"", line 1732, in as_array\n    arr = self._interleave(dtype=dtype, na_value=na_value)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/core/internals/managers.py"", line 1794, in _interleave\n    result[rl.indexer] = arr\nValueError: could not convert string to float: \'A\'\n'}",3/6,/data/wyk/autosd/arhe/bigcodebench5.new/105/solution_v0_s0_o0.py
+"Perform exploratory data analysis on a dataframe. This function converts the 'date' column to an ordinal format, creates a correlation matrix, and generates a pair plot of the dataframe. The title of the plot is 'Correlation Matrix'.
+The function should raise the exception for: ValueError: If the dataframe is empty, if required columns are missing, or if 'date' column is not in datetime format.
+The function should output with:
+    matplotlib.figure.Figure: The figure object for the correlation matrix heatmap.
+    seaborn.axisgrid.PairGrid: The PairGrid object for the pair plot.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+def task_func(df):
+```",10,1,"
+defimport seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+task_func(df):
+    if df.empty or 'date' not in df.columns or not pd.api.types.is_datetime64_any_dtype(df['date']):
+        raise ValueError(""Invalid dataframe or missing 'date' column in datetime format"")
+
+    df['date'] = df['date'].apply(lambda x: x.toordinal())
+
+    corr_matrix = df.select_dtypes(include=[np.number]).corr()
+    fig, ax = plt.subplots(figsize=(10, 8))
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', ax=ax)
+    ax.set_title('Correlation Matrix')
+
+    pair_plot = sns.pairplot(df)
+    
+    return fig, pair_plot
+",sys_error,test_plot_titles,"    def test_plot_titles(self):
+        heatmap_fig, pairplot_grid = task_func(self.valid_df)
+        self.assertEqual(heatmap_fig.axes[0].get_title(), 'Correlation Matrix')","{'stat': 'sys_error', 'exception_type': 'SyntaxError(\'invalid syntax\', (\'__test__.py\', 2, 11, \'defimport seaborn as sns\\n\', 2, 18))\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 2\n    defimport seaborn as sns\n              ^^^^^^^\nSyntaxError: invalid syntax\n', 'stdout_logs': '', 'traceback_frame': [], 'traceback_str': 'SyntaxError(\'invalid syntax\', (\'__test__.py\', 2, 11, \'defimport seaborn as sns\\n\', 2, 18))\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 2\n    defimport seaborn as sns\n              ^^^^^^^\nSyntaxError: invalid syntax\n'}",0/6,/data/wyk/autosd/arhe/bigcodebench5.new/105/solution_v1_s10_o0.py

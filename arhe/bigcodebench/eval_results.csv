@@ -1,0 +1,2 @@
+sample_size,avg_input_token,avg_output_token,avg_model_call,avg_steps,avg_solutions,pass_rate,fail_rate,pass_ids,fail_ids
+2,114968.5,6367.0,27.5,0.0,2.0,0.0,1.0,[],"['BigCodeBench/1056', 'BigCodeBench/1057']"

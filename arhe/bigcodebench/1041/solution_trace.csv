@@ -1,0 +1,66 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Handles an HTTP GET request to retrieve a static file from the server. This function processes an HTTP GET request, extracts the filename from it, checks the existence of the file in the server's directory, and returns an HTTP response. The response either contains the file content (if found) or an appropriate error message (if not found or if the request is invalid).
+The function should output with:
+    str: An HTTP response string, which includes the status code, content length (for 200 OK responses), and the file content
+    or an error message.
+You should write self-contained code starting with:
+```
+import re
+import os
+def task_func(request):
+```",0,0,"import re
+import os
+def task_func(request):
+
+    pass
+import re
+import os
+def task_func(request):
+    # Extract filename from the request
+    match = re.search(r'GET /(.*) HTTP', request)
+    if match:
+        filename = match.group(1)
+    else:
+        return ""400 Bad Request: Invalid HTTP request""
+
+    # Check if the file exists
+    if os.path.exists(filename):
+        with open(filename, 'r') as file:
+            content = file.read()
+            response = f""200 OK\nContent-Length: {len(content)}\n\n{content}""
+    else:
+        response = ""404 Not Found: File not found""
+
+    return response",error,test_bad_request,"    def test_bad_request(self):
+        """"""Test the response for a badly formatted request.""""""
+        request = ""BAD REQUEST""
+        expected_response = ""HTTP/1.1 400 BAD REQUEST\r\n\r\nBad Request""
+        self.assertEqual(task_func(request), expected_response)","{'stat': 'fail', 'exception_type': ""AssertionError: '400 Bad Request: Invalid HTTP request' != 'HTTP/1.1 400 BAD REQUEST\\r\\n\\r\\nBad Request'\n- 400 Bad Request: Invalid HTTP request\n+ HTTP/1.1 400 BAD REQUEST\r\n\r\nBad Request\n"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 54, 'funcname': 'test_bad_request', 'codeline': '        self.assertEqual(task_func(request), expected_response)'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 54, in test_bad_request\nAssertionError: \'400 Bad Request: Invalid HTTP request\' != \'HTTP/1.1 400 BAD REQUEST\\r\\n\\r\\nBad Request\'\n- 400 Bad Request: Invalid HTTP request\n+ HTTP/1.1 400 BAD REQUEST\r\n\r\nBad Request\n\n'}",0/6,/data/wyk/autosd/arhe/bigcodebench5.new/1041/solution_v0_s0_o0.py
+"Handles an HTTP GET request to retrieve a static file from the server. This function processes an HTTP GET request, extracts the filename from it, checks the existence of the file in the server's directory, and returns an HTTP response. The response either contains the file content (if found) or an appropriate error message (if not found or if the request is invalid).
+The function should output with:
+    str: An HTTP response string, which includes the status code, content length (for 200 OK responses), and the file content
+    or an error message.
+You should write self-contained code starting with:
+```
+import re
+import os
+def task_func(request):
+```",6,1,"
+def task_func(request):
+    match = re.search(r'GET /(.*) HTTP', request)
+    if not match:
+        return ""HTTP/1.1 400 BAD REQUEST\r\n\r\nBad Request""
+    
+    filename = match.group(1)
+    if os.path.exists(filename):
+        try:
+            with open(filename, 'r') as file:
+                content = file.read()
+                response = f""HTTP/1.1 200 OK\r\nContent-Length: {len(content)}\r\n\r\n{content}""
+        except Exception:
+            response = ""HTTP/1.1 500 INTERNAL SERVER ERROR\r\n\r\nInternal Server Error""
+    else:
+        response = ""HTTP/1.1 404 NOT FOUND\r\n\r\nFile Not Found""
+    
+    return response
+",pass,,,,6/6,/data/wyk/autosd/arhe/bigcodebench5.new/1041/solution_v1_s6_o1.py

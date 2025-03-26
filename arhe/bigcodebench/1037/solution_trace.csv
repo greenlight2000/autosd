@@ -1,0 +1,114 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Perform K-Means clustering on data points from two pandas Series and visualize the clusters.
+Note that: Notes: The function needs to ensure that s1 and s2 are pandas Series of equal length. It then performs K-Means clustering on the combined data points from s1 and s2. After clustering, it creates a scatter plot where each cluster is visualized with a different color. The plot title is set to ""K-Means Clustering"" to describe the visualization technique. A legend is added, which uses elements from the scatter plot to describe each cluster.
+The function should raise the exception for: ValueError: If either s1 or s2 is not a pandas Series, raise ""s1 and s2 must be pandas Series"" ValueError: If s1 and s2 have different lengths, raise ""s1 and s2 must have the same length""
+The function should output with:
+    tuple: A tuple containing the following elements:
+    ndarray: An array of cluster labels indicating the cluster each data point belongs to.
+    matplotlib.axes.Axes: The Axes object of the plot, which shows the data points colored according to their cluster labels.
+You should write self-contained code starting with:
+```
+import pandas as pd
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+def task_func(s1, s2, n_clusters=3):
+```",0,0,"import pandas as pd
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+def task_func(s1, s2, n_clusters=3):
+
+    pass
+import pandas as pd
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+def task_func(s1, s2, n_clusters=3):
+    if not isinstance(s1, pd.Series) or not isinstance(s2, pd.Series):
+        raise ValueError(""s1 and s2 must be pandas Series"")
+    if len(s1) != len(s2):
+        raise ValueError(""s1 and s2 must have the same length"")
+    
+    combined_data = pd.concat([s1, s2], axis=1)
+    
+    kmeans = KMeans(n_clusters=n_clusters)
+    cluster_labels = kmeans.fit_predict(combined_data)
+    
+    plt.figure(figsize=(8, 6))
+    plt.scatter(combined_data.iloc[:, 0], combined_data.iloc[:, 1], c=cluster_labels, cmap='viridis')
+    plt.title(""K-Means Clustering"")
+    plt.xlabel(s1.name)
+    plt.ylabel(s2.name)
+    
+    handles = []
+    for i in range(n_clusters):
+        handles.append(plt.scatter([], [], c=i, label=f'Cluster {i}'))
+    
+    plt.legend(handles=handles, title='Clusters')
+    
+    return cluster_labels, plt.gca()",error,test_custom_clusters_with_synthetic_data,"    def test_custom_clusters_with_synthetic_data(self):
+        """"""Test with synthetic data and custom number of clusters using make_blobs""""""
+        # Generate synthetic data with 2 distinct clusters
+        X, _ = make_blobs(n_samples=100, centers=2, random_state=42)
+        # Convert to pandas Series
+        s1 = pd.Series(X[:, 0], name=""feature1"")
+        s2 = pd.Series(X[:, 1], name=""feature2"")
+        # Run the clustering function
+        labels, ax = task_func(s1, s2, n_clusters=2)
+        # Check if labels are ndarray
+        self.assertIsInstance(labels, np.ndarray)
+        # Check the number of unique labels (should be 2 for 2 clusters)
+        self.assertEqual(len(set(labels)), 2)
+        # Check the plot's title
+        self.assertEqual(ax.get_title(), ""K-Means Clustering"")","{'stat': 'error', 'exception_type': ""ValueError: 'c' argument has 1 elements, which is inconsistent with 'x' and 'y' with size 0."", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 84, 'funcname': 'test_custom_clusters_with_synthetic_data', 'codeline': '        labels, ax = task_func(s1, s2, n_clusters=2)'}, {'filename': '__test__.py', 'lineno': 29, 'funcname': 'task_func', 'codeline': ""        handles.append(plt.scatter([], [], c=i, label=f'Cluster {i}'))""}], 'traceback_str': 'Traceback (most recent call last):\n  File ""/home/wyk/.local/lib/python3.10/site-packages/matplotlib/axes/_axes.py"", line 4439, in _parse_scatter_color_args\n    colors = mcolors.to_rgba_array(c)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/matplotlib/colors.py"", line 473, in to_rgba_array\n    if len(c) == 0:\nTypeError: len() of unsized object\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File ""__test__.py"", line 84, in test_custom_clusters_with_synthetic_data\n  File ""__test__.py"", line 29, in task_func\n  File ""/home/wyk/.local/lib/python3.10/site-packages/matplotlib/pyplot.py"", line 2835, in scatter\n    __ret = gca().scatter(\n  File ""/home/wyk/.local/lib/python3.10/site-packages/matplotlib/__init__.py"", line 1442, in inner\n    return func(ax, *map(sanitize_sequence, args), **kwargs)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/matplotlib/axes/_axes.py"", line 4602, in scatter\n    self._parse_scatter_color_args(\n  File ""/home/wyk/.local/lib/python3.10/site-packages/matplotlib/axes/_axes.py"", line 4445, in _parse_scatter_color_args\n    raise invalid_shape_exception(c.size, xsize) from err\nValueError: \'c\' argument has 1 elements, which is inconsistent with \'x\' and \'y\' with size 0.\n'}",2/5,/data/wyk/autosd/arhe/bigcodebench5.new/1037/solution_v0_s0_o0.py
+"Perform K-Means clustering on data points from two pandas Series and visualize the clusters.
+Note that: Notes: The function needs to ensure that s1 and s2 are pandas Series of equal length. It then performs K-Means clustering on the combined data points from s1 and s2. After clustering, it creates a scatter plot where each cluster is visualized with a different color. The plot title is set to ""K-Means Clustering"" to describe the visualization technique. A legend is added, which uses elements from the scatter plot to describe each cluster.
+The function should raise the exception for: ValueError: If either s1 or s2 is not a pandas Series, raise ""s1 and s2 must be pandas Series"" ValueError: If s1 and s2 have different lengths, raise ""s1 and s2 must have the same length""
+The function should output with:
+    tuple: A tuple containing the following elements:
+    ndarray: An array of cluster labels indicating the cluster each data point belongs to.
+    matplotlib.axes.Axes: The Axes object of the plot, which shows the data points colored according to their cluster labels.
+You should write self-contained code starting with:
+```
+import pandas as pd
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+def task_func(s1, s2, n_clusters=3):
+```",3,1,"
+def task_func(s1, s2, n_clusters=3):
+    if not isinstance(s1, pd.Series) or not isinstance(s2, pd.Series):
+        raise ValueError(""s1 and s2 must be pandas Series"")
+    if len(s1) != len(s2):
+        raise ValueError(""s1 and s2 must have the same length"")
+    
+    combined_data = pd.concat([s1, s2], axis=1)
+    
+    kmeans = KMeans(n_clusters=n_clusters)
+    cluster_labels = kmeans.fit_predict(combined_data)
+    
+    plt.figure(figsize=(8, 6))
+    plt.scatter(combined_data.iloc[:, 0], combined_data.iloc[:, 1], c=cluster_labels, cmap='viridis')
+    plt.title(""K-Means Clustering"")
+    plt.xlabel(s1.name)
+    plt.ylabel(s2.name)
+    
+    handles = []
+    for i in range(n_clusters):
+        handles.append(plt.scatter([], [], c=f'C{i}', label=f'Cluster {i}'))
+    
+    plt.legend(handles=handles, title='Clusters')
+    
+    return cluster_labels, plt.gca()
+",error,test_custom_clusters_with_synthetic_data,"    def test_custom_clusters_with_synthetic_data(self):
+        """"""Test with synthetic data and custom number of clusters using make_blobs""""""
+        # Generate synthetic data with 2 distinct clusters
+        X, _ = make_blobs(n_samples=100, centers=2, random_state=42)
+        # Convert to pandas Series
+        s1 = pd.Series(X[:, 0], name=""feature1"")
+        s2 = pd.Series(X[:, 1], name=""feature2"")
+        # Run the clustering function
+        labels, ax = task_func(s1, s2, n_clusters=2)
+        # Check if labels are ndarray
+        self.assertIsInstance(labels, np.ndarray)
+        # Check the number of unique labels (should be 2 for 2 clusters)
+        self.assertEqual(len(set(labels)), 2)
+        # Check the plot's title
+        self.assertEqual(ax.get_title(), ""K-Means Clustering"")","{'stat': 'error', 'exception_type': ""NameError: name 'plt' is not defined"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 85, 'funcname': 'tearDown', 'codeline': '        plt.clf()'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 85, in tearDown\nNameError: name \'plt\' is not defined\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5.new/1037/solution_v1_s3_o0.py

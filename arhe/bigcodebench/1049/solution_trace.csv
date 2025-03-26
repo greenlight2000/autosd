@@ -1,0 +1,77 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Process a multi-line string by replacing tabs with spaces and converting it into a pandas DataFrame. Each non-empty line of the input string is transformed into a separate row in the DataFrame. The function specifically filters out empty lines and replaces tabs with single spaces in the remaining lines.
+Note that: The function excludes lines that are empty or contain only whitespace. Tabs within the lines are replaced with a single space. For instance, a '\\t' character in the input string will be replaced by ' ' in the output DataFrame.
+The function should output with:
+    pd.DataFrame: A DataFrame with a single column named 'Text'. Each row in this column corresponds to a non-empty
+    line from the input string, with tabs replaced by spaces.
+You should write self-contained code starting with:
+```
+import re
+import pandas as pd
+def task_func(input_string: str) -> pd.DataFrame:
+```",0,0,"import re
+import pandas as pd
+def task_func(input_string: str) -> pd.DataFrame:
+
+    pass
+import re
+import pandas as pd
+def task_func(input_string: str) -> pd.DataFrame:
+    lines = input_string.split('\n')
+    cleaned_lines = [re.sub(r'\t', ' ', line.strip()) for line in lines if line.strip()]
+    df = pd.DataFrame({'Text': cleaned_lines})
+    return df",fail,test_empty_string,"    def test_empty_string(self):
+        """"""
+        Test with an empty string.
+        """"""
+        input_str = """"
+        expected_output = pd.DataFrame(columns=[""Text""])
+        pd.testing.assert_frame_equal(task_func(input_str), expected_output)","{'stat': 'fail', 'exception_type': 'AssertionError: Attributes of DataFrame.iloc[:, 0] (column name=""Text"") are different\n\nAttribute ""dtype"" are different\n[left]:  float64\n[right]: object', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 30, 'funcname': 'test_empty_string', 'codeline': '        pd.testing.assert_frame_equal(task_func(input_str), expected_output)'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 30, in test_empty_string\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/_testing/asserters.py"", line 1224, in assert_frame_equal\n    assert_series_equal(\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/_testing/asserters.py"", line 931, in assert_series_equal\n    assert_attr_equal(""dtype"", left, right, obj=f""Attributes of {obj}"")\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/_testing/asserters.py"", line 415, in assert_attr_equal\n    raise_assert_detail(obj, msg, left_attr, right_attr)\n  File ""/home/wyk/.local/lib/python3.10/site-packages/pandas/_testing/asserters.py"", line 599, in raise_assert_detail\n    raise AssertionError(msg)\nAssertionError: Attributes of DataFrame.iloc[:, 0] (column name=""Text"") are different\n\nAttribute ""dtype"" are different\n[left]:  float64\n[right]: object\n'}",3/5,/data/wyk/autosd/arhe/bigcodebench5.new/1049/solution_v0_s0_o0.py
+"Process a multi-line string by replacing tabs with spaces and converting it into a pandas DataFrame. Each non-empty line of the input string is transformed into a separate row in the DataFrame. The function specifically filters out empty lines and replaces tabs with single spaces in the remaining lines.
+Note that: The function excludes lines that are empty or contain only whitespace. Tabs within the lines are replaced with a single space. For instance, a '\\t' character in the input string will be replaced by ' ' in the output DataFrame.
+The function should output with:
+    pd.DataFrame: A DataFrame with a single column named 'Text'. Each row in this column corresponds to a non-empty
+    line from the input string, with tabs replaced by spaces.
+You should write self-contained code starting with:
+```
+import re
+import pandas as pd
+def task_func(input_string: str) -> pd.DataFrame:
+```",3,1,"
+def task_func(input_string: str) -> pd.DataFrame:
+    lines = input_string.split('\n')
+    cleaned_lines = [re.sub(r'\t', ' ', line.strip()) for line in lines if line.strip()]
+    df = pd.DataFrame({'Text': cleaned_lines}, dtype=object)
+    return df
+",sys_error,test_empty_string,"    def test_empty_string(self):
+        """"""
+        Test with an empty string.
+        """"""
+        input_str = """"
+        expected_output = pd.DataFrame(columns=[""Text""])
+        pd.testing.assert_frame_equal(task_func(input_str), expected_output)","{'stat': 'sys_error', 'exception_type': 'NameError(""name \'pd\' is not defined"")\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 2, in <module>\nNameError: name \'pd\' is not defined\n', 'stdout_logs': '', 'traceback_frame': [], 'traceback_str': 'NameError(""name \'pd\' is not defined"")\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 2, in <module>\nNameError: name \'pd\' is not defined\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5.new/1049/solution_v1_s3_o0.py
+"Process a multi-line string by replacing tabs with spaces and converting it into a pandas DataFrame. Each non-empty line of the input string is transformed into a separate row in the DataFrame. The function specifically filters out empty lines and replaces tabs with single spaces in the remaining lines.
+Note that: The function excludes lines that are empty or contain only whitespace. Tabs within the lines are replaced with a single space. For instance, a '\\t' character in the input string will be replaced by ' ' in the output DataFrame.
+The function should output with:
+    pd.DataFrame: A DataFrame with a single column named 'Text'. Each row in this column corresponds to a non-empty
+    line from the input string, with tabs replaced by spaces.
+You should write self-contained code starting with:
+```
+import re
+import pandas as pd
+def task_func(input_string: str) -> pd.DataFrame:
+```",10,2,"
+def task_func(input_string: str) -> pd.DataFrame:
+    import pandas as pd
+    import re
+    lines = input_string.split('\n')
+    cleaned_lines = [re.sub(r'\t', ' ', line.strip()) for line in lines if line.strip()]
+    df = pd.DataFrame({'Text': cleaned_lines}, dtype=object)
+    return df
+",sys_error,test_empty_string,"    def test_empty_string(self):
+        """"""
+        Test with an empty string.
+        """"""
+        input_str = """"
+        expected_output = pd.DataFrame(columns=[""Text""])
+        pd.testing.assert_frame_equal(task_func(input_str), expected_output)","{'stat': 'sys_error', 'exception_type': 'NameError(""name \'pd\' is not defined"")\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 2, in <module>\nNameError: name \'pd\' is not defined\n', 'stdout_logs': '', 'traceback_frame': [], 'traceback_str': 'NameError(""name \'pd\' is not defined"")\nTraceback (most recent call last):\n  File ""/data/wyk/bigcodebench/agents/evaluate.py"", line 152, in unsafe_execute\n    exec(compile(full_code, f""{module_name}.py"", \'exec\'), new_module.__dict__)\n  File ""__test__.py"", line 2, in <module>\nNameError: name \'pd\' is not defined\n'}",0/5,/data/wyk/autosd/arhe/bigcodebench5.new/1049/solution_v2_s10_o0.py

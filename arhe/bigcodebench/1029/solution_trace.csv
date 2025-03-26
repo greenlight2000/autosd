@@ -1,0 +1,66 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Create a Pandas DataFrame with random alphabets in each cell. The DataFrame will have a specified number of rows and columns. Each column is named with a string from the list ['a', 'b', 'c', ...] depending on the number of columns specified.
+The function should output with:
+    DataFrame: A pandas DataFrame with random alphabets.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import numpy as np
+def task_func(rows=100, columns=3):
+```",0,0,"import pandas as pd
+import numpy as np
+def task_func(rows=100, columns=3):
+
+    pass
+import pandas as pd
+import numpy as np
+def task_func(rows=100, columns=3):
+    data = np.random.choice(list('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), size=(rows, columns))
+    col_names = [chr(ord('a') + i) for i in range(columns)]
+    df = pd.DataFrame(data, columns=col_names)
+    
+    return df",fail,test_dataframe_values,"    def test_dataframe_values(self):
+        """"""Test if each cell in the DataFrame contains a letter from the English alphabet.""""""
+        np.random.seed(6)
+        df_test = task_func()
+        for col in df_test.columns:
+            self.assertTrue(
+                set(df_test[col].unique()).issubset(set(""abcdefghijklmnopqrstuvwxyz""))
+            )","{'stat': 'fail', 'exception_type': 'AssertionError: False is not true', 'traceback_frame': [{'filename': '__test__.py', 'lineno': 49, 'funcname': 'test_dataframe_values', 'codeline': '            self.assertTrue('}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 49, in test_dataframe_values\nAssertionError: False is not true\n'}",6/7,/data/wyk/autosd/arhe/bigcodebench5/1029/solution_v0_s0_o0.py
+"Create a Pandas DataFrame with random alphabets in each cell. The DataFrame will have a specified number of rows and columns. Each column is named with a string from the list ['a', 'b', 'c', ...] depending on the number of columns specified.
+The function should output with:
+    DataFrame: A pandas DataFrame with random alphabets.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import numpy as np
+def task_func(rows=100, columns=3):
+```",4,1,"
+def task_func(rows=100, columns=3):
+    data = np.random.choice(list('abcdefghijklmnopqrstuvwxyz'), size=(rows, columns))
+    col_names = [chr(ord('a') + i) for i in range(columns)]
+    df = pd.DataFrame(data, columns=col_names)
+    return df
+",error,test_dataframe_columns_custom,"    def test_dataframe_columns_custom(self):
+        """"""Test if the DataFrame has the correct column names when a custom number of columns is specified.""""""
+        np.random.seed(5)
+        df_test = task_func(columns=5)
+        expected_columns = [""a"", ""b"", ""c"", ""d"", ""e""]
+        self.assertListEqual(list(df_test.columns), expected_columns)","{'stat': 'error', 'exception_type': ""NameError: name 'pd' is not defined"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 35, 'funcname': 'test_dataframe_columns_custom', 'codeline': '        df_test = task_func(columns=5)'}, {'filename': '__test__.py', 'lineno': 5, 'funcname': 'task_func', 'codeline': '    df = pd.DataFrame(data, columns=col_names)'}], 'stdout_logs': '', 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 35, in test_dataframe_columns_custom\n  File ""__test__.py"", line 5, in task_func\nNameError: name \'pd\' is not defined\n'}",0/7,/data/wyk/autosd/arhe/bigcodebench5/1029/solution_v1_s4_o0.py
+"Create a Pandas DataFrame with random alphabets in each cell. The DataFrame will have a specified number of rows and columns. Each column is named with a string from the list ['a', 'b', 'c', ...] depending on the number of columns specified.
+The function should output with:
+    DataFrame: A pandas DataFrame with random alphabets.
+You should write self-contained code starting with:
+```
+import pandas as pd
+import numpy as np
+def task_func(rows=100, columns=3):
+```",10,2,"
+def task_func(rows=100, columns=3):
+    import pandas as pd
+    import numpy as np
+    data = np.random.choice(list('abcdefghijklmnopqrstuvwxyz'), size=(rows, columns))
+    col_names = [chr(ord('a') + i) for i in range(columns)]
+    df = pd.DataFrame(data, columns=col_names)
+    return df
+",pass,,,,7/7,/data/wyk/autosd/arhe/bigcodebench5/1029/solution_v2_s10_o1.py

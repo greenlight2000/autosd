@@ -1,0 +1,70 @@
+coding_task,step_n,solution_version,code_solution,code_status,focused_test_name,focused_test_source,focused_test_result,pass_rate,solution_code_file
+"Downloads, extracts, and deletes a ZIP file from a specified URL. The function includes comprehensive error handling to manage issues such as invalid URLs, unreachable servers, corrupted ZIP files, and file I/O errors. In the event of a failure, it provides a descriptive error message.
+The function should raise the exception for: urllib.error.URLError: If the URL is invalid or the server cannot be reached. In this case, the function returns a string in the format ""URL Error: [error reason]"".
+The function should output with:
+    str: The path to the directory where the ZIP file's contents have been extracted. Returns an error message in case of failure.
+You should write self-contained code starting with:
+```
+import urllib.request
+import zipfile
+import os
+import urllib.error
+def task_func(
+    url: str,
+    save_path: str = ""downloaded_file.zip"",
+    extract_path: str = ""extracted_files"",
+) -> str:
+```",0,0,"import urllib.request
+import zipfile
+import os
+import urllib.error
+def task_func(
+    url: str,
+    save_path: str = ""downloaded_file.zip"",
+    extract_path: str = ""extracted_files"",
+) -> str:
+
+    pass
+import urllib.request
+import zipfile
+import os
+import urllib.error
+def task_func(
+    url: str,
+    save_path: str = ""downloaded_file.zip"",
+    extract_path: str = ""extracted_files"",
+) -> str:
+    try:
+        # Download the ZIP file from the specified URL
+        urllib.request.urlretrieve(url, save_path)
+        
+        # Extract the contents of the ZIP file
+        with zipfile.ZipFile(save_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_path)
+        
+        # Delete the downloaded ZIP file
+        os.remove(save_path)
+        
+        return os.path.abspath(extract_path)
+    
+    except urllib.error.URLError as e:
+        return f""URL Error: {str(e)}""
+    
+    except zipfile.BadZipFile:
+        return ""Error: Corrupted ZIP file""
+    
+    except FileNotFoundError:
+        return ""Error: File not found""
+    
+    except Exception as e:
+        return f""Error: {str(e)}""
+url = ""https://example.com/example.zip""",fail,test_extraction_path_already_exists,"    def test_extraction_path_already_exists(self):
+        """"""Test Case 5: Extraction Path Already Exists""""""
+        url = ""https://getsamplefiles.com/download/zip/sample-2.zip""
+        save_path = Path(self.base_path) / ""extract_path_exists.zip""
+        extract_path = Path(self.base_path) / ""existing_extract_path""
+        # Create the extraction path directory
+        if not os.path.exists(extract_path):
+            os.makedirs(extract_path)
+        result_path = task_func(url, save_path, extract_path)
+        self.assertEqual(result_path, extract_path)","{'stat': 'fail', 'exception_type': ""AssertionError: 'URL Error: HTTP Error 403: Forbidden' != PosixPath('/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/existing_extract_path')"", 'traceback_frame': [{'filename': '__test__.py', 'lineno': 105, 'funcname': 'test_extraction_path_already_exists', 'codeline': '        self.assertEqual(result_path, extract_path)'}], 'traceback_str': 'Traceback (most recent call last):\n  File ""__test__.py"", line 105, in test_extraction_path_already_exists\nAssertionError: \'URL Error: HTTP Error 403: Forbidden\' != PosixPath(\'/data/tmp/tmp_d4faa9u/mnt/data/task_func_data/existing_extract_path\')\n'}",1/5,/data/wyk/autosd/arhe/bigcodebench5/1005/solution_v0_s0_o0.py
